@@ -5,9 +5,20 @@
  */
 package Matriz;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -57,6 +68,8 @@ public class Matriz extends HttpServlet {
                 }
             }
             //no hay casa la creo
+           
+            
         } else { // si no existe numeroYposcion lo inicilazimos
             //se guardan las respuestas del cliente en un int bidimensional
             int[][] numeroYposicion = new int[9][9];
@@ -108,15 +121,31 @@ public class Matriz extends HttpServlet {
                 out.println("</tr>");
             }
             out.println("</table>");
-            out.println("<button>Guardar</button></form>");
+            out.println("<button>Almacenar</button></form>");
              
             out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"datos\"><input type=\"hidden\" name=\"comprobar\" value=\"algo\"><button>Comprobar</button></form>");
            //cliente.invalidate();
+            String user = request.getParameter("user");
+          
+            Cookie ck = new Cookie("sudoku",user);
+            response.addCookie(ck);
+            out.println(ck);
+            // out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"guardar\"><input type=\"hidden\" name=\"guardar\" value=\"guardar\"><button>Guardar</button></form>");
+         
+            db.guardar(user, matriz);
             out.println("<h1>Servlet Matriz at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
     }
+   
+        
+
+       
+       
+
+       
+
 public String resolver(int x,int y, int resp, int[][] solucion) {
         if(solucion[x][y]==resp){
             return "green";

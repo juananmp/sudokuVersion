@@ -88,7 +88,7 @@ public class CheckUserPassword extends HttpServlet {
             throws ServletException, IOException {
         
         PrintWriter out = response.getWriter();
-        out.println("LLEGASTE");
+        //out.println("LLEGASTE");
         
         String user = request.getParameter("user");
         String password = request.getParameter("password");
@@ -103,20 +103,20 @@ public class CheckUserPassword extends HttpServlet {
            resulSet = statement.executeQuery(query);
           
            //con el while si el user y passwd estan en la bbdd lo ejecuta
-           while(resulSet.next()){
-       out.println(user+password);;
-           } 
-           //out.println("no he enocntrado valores");
-           //out.println("<form method=\"post\" action=\"/sudokuVersion/CheckUser\"><input type=\"hidden\" name=\"\" value=\"algo\"><button>Comprobar</button></form>");
-            // response.sendRedirect(request.getContextPath() + "/CheckUser");
+           if(resulSet.next()){
+                RequestDispatcher anhadirServlet =
+                    contexto.getNamedDispatcher("Matriz");
+                 anhadirServlet.forward(request, response);
+           } else{
                     RequestDispatcher paginaError
                         = contexto.getRequestDispatcher("/CheckUser");
                 paginaError.forward(request, response);
+           }
        } catch (SQLException ex) {
              System.out.println(ex);
           
        }
-        processRequest(request, response);
+       // processRequest(request, response);
     }
 
     

@@ -207,6 +207,43 @@ public boolean existeCuenta(String user, String password) {
         RequestDispatcher paginaError = contexto.getRequestDispatcher("/Ejemplo10/errorSQL.jsp");
         paginaError.forward(request, response);
     }
+    public void guardar(String user,  int[][] intermedia){
+     init();
+        int i=0;
+        int j=0;
+        int fila;
+        int col;
+        int valor;
+        int numSudoku=1;
+      
+        while(i<=8){
+                    j=0;
+                    while(j<=8){
+                        fila = i+1;
+                        col=j+1;
+                        valor = intermedia[i][j];
+                     
+        String query = null;
+         query = "insert into intermedia values('"
+                + user + "'," + numSudoku + "," + fila +  "," + col + ","+ valor +");";
+         
+       Statement statement = null;
+       Connection connection = null;
+        try {
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
+                      
+        }catch (SQLException ex) { 
+            System.out.println(ex);
+                } 
+        j++;
+        
+        }
+                    i++;
+                }
+                
+   }
     
     //cuando el usuario pide una plantilla de sudoku le redireccionamos a ella
 public int[][] plantilla(String plantilla){
