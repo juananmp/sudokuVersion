@@ -62,7 +62,10 @@ public class Matriz extends HttpServlet {
               String valor = ckActual.getValue();
               if(identificador.equals("sudoku")&& valor.equals(user)){
                 int[][] numeroYposicion = db.plantillaIntermedia(user);
-                 
+                
+                  System.out.println("he llegado antes----------------<");
+               cliente.setAttribute("numeroYposicion", numeroYposicion); //aqui se subscribe
+                   System.out.println("he llegado despues request----------------<");        
                 
                  
               }
@@ -74,7 +77,7 @@ public class Matriz extends HttpServlet {
       
         //la primera vez que entre el valor de numeroYposicion va a ser nulo
         if (cliente.getAttribute("numeroYposicion") != null) {//si existe el numeroYposcion es que la partida ha empezado
-            
+            System.out.println("la partida ha ocmenzado");
             for (int m = 0; m < 9; m++) { //movernos por fila y columna 1er piso
                 for (int k = 0; k < 9; k++) { //entramos por habitcion del primer piso
                     if (comprobar(request.getParameter("numero" + m + k))) {//¿Nos envian algo? y si es un número?
@@ -160,7 +163,7 @@ public class Matriz extends HttpServlet {
 
              }
             out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"datos\"><input type=\"hidden\" name=\"comprobar\" value=\"algo\"><button>Comprobar</button></form>");
-          // cliente.invalidate();
+          //cliente.invalidate();
             
           
           
