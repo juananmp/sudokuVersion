@@ -2,19 +2,19 @@
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
     <servlet>
         <servlet-name>Database</servlet-name>
-        <servlet-class>Matriz.Database</servlet-class>
+        <servlet-class>Matrizsudokuversion.Database</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CheckUserPassword</servlet-name>
-        <servlet-class>Matriz.CheckUserPassword</servlet-class>
+        <servlet-class>Matrizsudokuversion.CheckUserPassword</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>CheckUser</servlet-name>
-        <servlet-class>Matriz.CheckUser</servlet-class>
+        <servlet-class>Matrizsudokuversion.CheckUser</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>Matriz</servlet-name>
-        <servlet-class>Matriz.Matriz</servlet-class>
+        <servlet-class>Matrizsudokuversion.Matriz</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>Database</servlet-name>

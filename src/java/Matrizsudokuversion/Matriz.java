@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Matriz;
+package Matrizsudokuversion;
 
 import java.io.File;
 import java.io.IOException;
@@ -47,8 +47,12 @@ public class Matriz extends HttpServlet {
 
         int[][] matriz = db.plantilla("Inicial");
         int[][] solucion = db.plantilla("Final");
-        
+        ServletContext servletContext = request.getServletContext();
+       
         HttpSession cliente = request.getSession();
+         String user = (String)cliente.getAttribute("user");
+        
+       
        String comprobar = request.getParameter("comprobar"); //Saber si nos piden comprobar, esto siempre escucha y siempre va a ser null hasta que pulse el botón de comprobar 
           
         //la primera vez que entre el valor de numeroYposicion va a ser nulo
@@ -85,7 +89,8 @@ public class Matriz extends HttpServlet {
             out.println("<title>Servlet Matriz</title>");            
             out.println("</head>");
             out.println("<body>");
-             out.println(" <form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"datos\"><table id=\"grid\">");
+             out.println(" <form method=\"post\" action=\"/sudokuVersion/Matriz\"><table id=\"grid\">");
+             
 //cogemos otra vez la matriz, volvemos a coger la casa, puede ser nueva o ya con datos
             int[][] contenido = (int[][]) cliente.getAttribute("numeroYposicion");
 //estos 2 bucles nos sirven para insertar los inputs, las cajas de texto
@@ -124,25 +129,30 @@ public class Matriz extends HttpServlet {
             out.println("</table>");
             
             out.println("<button>Almacenar</button>");
-             
+            
             out.println("</form>");
              if(comprobar!=null){
-            String user = request.getParameter("user");
+//            String user = request.getParameter("user");
              int[][] numeroYposicion = (int[][]) cliente.getAttribute("numeroYposicion");
-                       
+//                         Cookie ck = new Cookie("sudoku",user);
+//            response.addCookie(ck);
+//            out.println(ck);
+
             db.guardar(user, numeroYposicion);
+//            comprobar = null;
+
+//            cliente.setAttribute("comprobar", this.getServletContext().getContextPath() + "/Matriz");
               }
             out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"datos\"><input type=\"hidden\" name=\"comprobar\" value=\"algo\"><button>Comprobar</button></form>");
            //cliente.invalidate();
             
           
-//            Cookie ck = new Cookie("sudoku",user);
-//            response.addCookie(ck);
-//            out.println(ck);
+          
             // out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"guardar\"><input type=\"hidden\" name=\"guardar\" value=\"guardar\"><button>Guardar</button></form>");
          
             
             out.println("<h1>Servlet Matriz at " + request.getContextPath() + "</h1>");
+            out.println(user);
             out.println("</body>");
             out.println("</html>");
         }
@@ -188,6 +198,8 @@ public String resolver(int x,int y, int resp, int[][] solucion) {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+//       String user = request.getParameter("user");
+//        request.setAttribute("user", user);
         processRequest(request, response);
     }
 

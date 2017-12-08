@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Matriz;
+package Matrizsudokuversion;
 
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,6 +22,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 /**
@@ -88,9 +89,7 @@ public class CheckUserPassword extends HttpServlet {
             throws ServletException, IOException {
         
         PrintWriter out = response.getWriter();
-        //out.println("LLEGASTE");
-        
-        String user = request.getParameter("user");
+         String user = request.getParameter("user");
         String password = request.getParameter("password");
         ServletContext contexto = request.getServletContext();
          try {
@@ -104,6 +103,11 @@ public class CheckUserPassword extends HttpServlet {
           
            //con el while si el user y passwd estan en la bbdd lo ejecuta
            if(resulSet.next()){
+               //crearse sesion de cliente y guardar en la sesion el atributo user
+               
+                HttpSession cliente = request.getSession();
+                cliente.setAttribute("user",user);
+        
                 RequestDispatcher anhadirServlet =
                     contexto.getNamedDispatcher("Matriz");
                  anhadirServlet.forward(request, response);

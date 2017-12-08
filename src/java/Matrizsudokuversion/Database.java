@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Matriz;
+package Matrizsudokuversion;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -209,6 +209,7 @@ public boolean existeCuenta(String user, String password) {
     }
     public void guardar(String user,  int[][] intermedia){
      init();
+     
         int i=0;
         int j=0;
         int fila;
@@ -216,9 +217,11 @@ public boolean existeCuenta(String user, String password) {
         int valor;
         int numSudoku=1;
       
+        borrar(user);
         while(i<=8){
                     j=0;
                     while(j<=8){
+                       
                         fila = i+1;
                         col=j+1;
                         valor = intermedia[i][j];
@@ -233,17 +236,39 @@ public boolean existeCuenta(String user, String password) {
             connection = datasource.getConnection();
             statement = connection.createStatement();
             statement.executeUpdate(query);
-                      
-        }catch (SQLException ex) { 
+                      connection.close();
+        }catch(SQLException ex) { 
             System.out.println(ex);
                 } 
         j++;
         
         }
                     i++;
+                    
                 }
+   
+       
                 
    }
+    public void borrar(String user){
+        init();
+        
+         String query = null;
+         query = "DELETE FROM intermedia WHERE user = '"
+                + user + "'";
+               
+       Statement statement = null;
+       Connection connection = null;
+        try {
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
+                      connection.close();
+        }catch(SQLException ex) { 
+            System.out.println(ex);
+                } 
+        
+    }
     
     //cuando el usuario pide una plantilla de sudoku le redireccionamos a ella
 public int[][] plantilla(String plantilla){
