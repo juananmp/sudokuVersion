@@ -49,7 +49,7 @@ public class Matriz extends HttpServlet {
         int[][] solucion = db.plantilla("Final");
         
         HttpSession cliente = request.getSession();
-        String comprobar = request.getParameter("comprobar"); //Saber si nos piden comprobar, esto siempre escucha y siempre va a ser null hasta que pulse el botón de comprobar 
+       String comprobar = request.getParameter("comprobar"); //Saber si nos piden comprobar, esto siempre escucha y siempre va a ser null hasta que pulse el botón de comprobar 
           
         //la primera vez que entre el valor de numeroYposicion va a ser nulo
         if (cliente.getAttribute("numeroYposicion") != null) {//si existe el numeroYposcion es que la partida ha empezado
@@ -119,20 +119,29 @@ public class Matriz extends HttpServlet {
                     }
                 }
                 out.println("</tr>");
-            }
+                            }
+            
             out.println("</table>");
-            out.println("<button>Almacenar</button></form>");
+            
+            out.println("<button>Almacenar</button>");
              
+            out.println("</form>");
+             if(comprobar!=null){
+            String user = request.getParameter("user");
+             int[][] numeroYposicion = (int[][]) cliente.getAttribute("numeroYposicion");
+                       
+            db.guardar(user, numeroYposicion);
+              }
             out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"datos\"><input type=\"hidden\" name=\"comprobar\" value=\"algo\"><button>Comprobar</button></form>");
            //cliente.invalidate();
-            String user = request.getParameter("user");
+            
           
-            Cookie ck = new Cookie("sudoku",user);
-            response.addCookie(ck);
-            out.println(ck);
+//            Cookie ck = new Cookie("sudoku",user);
+//            response.addCookie(ck);
+//            out.println(ck);
             // out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"guardar\"><input type=\"hidden\" name=\"guardar\" value=\"guardar\"><button>Guardar</button></form>");
          
-            db.guardar(user, matriz);
+            
             out.println("<h1>Servlet Matriz at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
