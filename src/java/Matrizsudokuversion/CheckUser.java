@@ -80,23 +80,7 @@ public class CheckUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//        processRequest(request, response);
-    }
-
-    /**
-     * Handles the HTTP <code>POST</code> method.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        
-        PrintWriter out = response.getWriter();
-        //out.println("LLEGASTE");
+            
         ServletContext contexto = request.getServletContext();
          String user = request.getParameter("user");
           try {
@@ -127,6 +111,23 @@ public class CheckUser extends HttpServlet {
              System.out.println(ex);
           
        }
+//        processRequest(request, response);
+    }
+
+    /**
+     * Handles the HTTP <code>POST</code> method.
+     *
+     * @param request servlet request
+     * @param response servlet response
+     * @throws ServletException if a servlet-specific error occurs
+     * @throws IOException if an I/O error occurs
+     */
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
+        PrintWriter out = response.getWriter();
+        out.println("REGISTRATE GUEY");
+   
 //////        processRequest(request, response);
     }
 
