@@ -269,6 +269,45 @@ public boolean existeCuenta(String user, String password) {
                 } 
         
     }
+   public int[][] plantillaIntermedia(String user){
+      init();
+    int[][] i = new int[9][9];
+       try {
+          String query=null;
+           query = "SELECT * FROM intermedia WHERE user = '"
+                + user + "'";
+           ResultSet resulSet = null;
+           connection = datasource.getConnection();
+           statement = connection.createStatement();
+           resulSet = statement.executeQuery(query);
+           
+           //necesitamos un puntero que es x, hace un bucle y recorre por fila
+           //x++ cambias de columna
+           int x = 0;
+           int y;
+           
+           while (x <= 8) {
+               y = 0;
+               while (y <= 8) {
+                   resulSet.next();
+                   i[x][y] = resulSet.getInt("Valor");
+                   y++;
+                   
+               }
+               x++;
+
+           }
+           connection.close();
+           //destroy();
+          
+           //return false;
+       } catch (SQLException ex) {
+           System.out.println("No existe el usuario");
+           //return false;
+       }
+       return i;
+       
+}
     
     //cuando el usuario pide una plantilla de sudoku le redireccionamos a ella
 public int[][] plantilla(String plantilla){

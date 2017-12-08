@@ -16,6 +16,10 @@
         <servlet-name>Matriz</servlet-name>
         <servlet-class>Matrizsudokuversion.Matriz</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Cookie</servlet-name>
+        <servlet-class>Matrizsudokuversion.ServletCookie</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Database</servlet-name>
         <url-pattern>/Database</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>Matriz</servlet-name>
         <url-pattern>/Matriz</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Cookie</servlet-name>
+        <url-pattern>/Cookie</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

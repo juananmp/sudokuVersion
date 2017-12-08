@@ -47,14 +47,31 @@ public class Matriz extends HttpServlet {
 
         int[][] matriz = db.plantilla("Inicial");
         int[][] solucion = db.plantilla("Final");
-        ServletContext servletContext = request.getServletContext();
-       
+        
         HttpSession cliente = request.getSession();
-         String user = (String)cliente.getAttribute("user");
+        String user = (String)cliente.getAttribute("user");
+         String comprobar = request.getParameter("comprobar"); //Saber si nos piden comprobar, esto siempre escucha y siempre va a ser null hasta que pulse el botón de comprobar 
+       //cokokie
+        if (comprobar==null){
+            Cookie[] cks = request.getCookies();
+         
+          for (int i=0; i< cks.length; i++){
+              Cookie ckActual = cks[i];
+               System.out.println(i);
+              String identificador = ckActual.getName();
+              String valor = ckActual.getValue();
+              if(identificador.equals("sudoku")&& valor.equals(user)){
+                int[][] numeroYposicion = db.plantillaIntermedia(user);
+                 
+                
+                 
+              }
+                      
+          }
+        }
         
        
-       String comprobar = request.getParameter("comprobar"); //Saber si nos piden comprobar, esto siempre escucha y siempre va a ser null hasta que pulse el botón de comprobar 
-          
+      
         //la primera vez que entre el valor de numeroYposicion va a ser nulo
         if (cliente.getAttribute("numeroYposicion") != null) {//si existe el numeroYposcion es que la partida ha empezado
             
@@ -132,19 +149,18 @@ public class Matriz extends HttpServlet {
             
             out.println("</form>");
              if(comprobar!=null){
-//            String user = request.getParameter("user");
              int[][] numeroYposicion = (int[][]) cliente.getAttribute("numeroYposicion");
-//                         Cookie ck = new Cookie("sudoku",user);
-//            response.addCookie(ck);
-//            out.println(ck);
+             Cookie ck = new Cookie("sudoku",user);
+              ck.setMaxAge(60*60*24);
+            response.addCookie(ck);
+            
+           
 
             db.guardar(user, numeroYposicion);
-//            comprobar = null;
 
-//            cliente.setAttribute("comprobar", this.getServletContext().getContextPath() + "/Matriz");
-              }
+             }
             out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"datos\"><input type=\"hidden\" name=\"comprobar\" value=\"algo\"><button>Comprobar</button></form>");
-           //cliente.invalidate();
+          // cliente.invalidate();
             
           
           
@@ -158,9 +174,7 @@ public class Matriz extends HttpServlet {
         }
     }
    
-        
-
-       
+  
        
 
        
@@ -184,6 +198,8 @@ public String resolver(int x,int y, int resp, int[][] solucion) {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+          
+        
         processRequest(request, response);
     }
 
