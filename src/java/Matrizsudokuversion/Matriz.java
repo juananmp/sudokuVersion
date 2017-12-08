@@ -85,6 +85,7 @@ public class Matriz extends HttpServlet {
                         //vas habitación por habitación y ves que hay un número en ella, cuando vuelve y dice ya no esta este numero lo sobreescribimos
                         int[][] numeroYposicion = (int[][]) cliente.getAttribute("numeroYposicion");
                         numeroYposicion[m][k] = Integer.parseInt(request.getParameter("numero" + m + k));
+                        //mirar
                         request.setAttribute("numeroYposicion", numeroYposicion); //aqui se subscribe
                         
                     }
