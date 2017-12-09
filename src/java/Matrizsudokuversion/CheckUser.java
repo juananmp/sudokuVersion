@@ -21,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 /**
@@ -82,11 +83,16 @@ public class CheckUser extends HttpServlet {
             throws ServletException, IOException {
             
         ServletContext contexto = request.getServletContext();
-         String user = request.getParameter("user");
+          HttpSession cliente = request.getSession();
+        String user = (String)cliente.getAttribute("user");
+       
+         System.out.println(user+ "primer paso<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
           try {
             
           String query=null;
+              System.out.println(user+"segundo paso<<<<<<<<<<<<<<<<<");
            query = "SELECT * FROM login WHERE user like '"+user+"'";
+              System.out.println(user+ "tercer paso<<<<<<<<<<<<<<<<<");
            ResultSet resulSet = null;
            connection = datasource.getConnection();
            statement = connection.createStatement();
@@ -111,7 +117,7 @@ public class CheckUser extends HttpServlet {
              System.out.println(ex);
           
        }
-//        processRequest(request, response);
+//       processRequest(request, response);
     }
 
     /**
@@ -125,8 +131,36 @@ public class CheckUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        PrintWriter out = response.getWriter();
-        out.println("REGISTRATE GUEY");
+       
+        String user = request.getParameter("user");
+        String password = request.getParameter("password");
+         System.out.println(user + password+ "-----------------------------------------<");
+       
+        ServletContext contexto = request.getServletContext();
+       
+        String query = null;
+      
+        System.out.println(user + password+ "-----------------------------------------<");
+        query = "INSERT INTO login VALUES ('"+ user + "', '"+ password +"')";
+               
+        Statement statement = null;
+        Connection connection = null;
+        try {
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
+
+             request.setAttribute("nextPage", this.getServletContext().getContextPath() + "/CheckUser");
+           
+             RequestDispatcher altaUser
+                    = contexto.getRequestDispatcher("/ComprobarInsercion");
+            altaUser.forward(request, response);
+            connection.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        } 
+
+
    
 //////        processRequest(request, response);
     }
