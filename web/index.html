@@ -8,7 +8,7 @@ and open the template in the editor.
 <html>
 
     <head>
-
+        <link rel="stylesheet" type="text/css" href="resources/css/w3.css">
         <title>TODO supply a title</title>
 
         <meta charset="UTF-8">
@@ -18,20 +18,25 @@ and open the template in the editor.
     </head>
 
     <body>
-
+            <div class="loginbox">
+                <img src="iconoLogin.png" class="avatar">
+                 <h1>Login Here</h1>
         <form method="post" action="/sudokuVersion/CheckUserPassword" >
 
-            User: <input type="text" name="user">
+           <p> Username/ Usuario</p>  <input type="text" name="user" placeholder="Al menos cuatro letras">
 
-            Password: <input type="password" name="password">
+           <p> Password/Contraseña</p>  <input type="password" name="password" placeholder="Enter Password">   
 
 
 
-            <input type="submit" value="Entrar" name="entrar">
- <a href="registro.html"> REGISTRARSE AQUI </a>
+            <input type="submit" value="Comenzar" name="login">
+            <a href="registro.html"> Regritrarse Aqui </a><br>
+            
         </form>
 
-
+            </div>
     </body>
 
 </html>
+
+ 
