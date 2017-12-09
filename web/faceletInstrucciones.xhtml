@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <body>
+
+        <ui:composition template="./templateWelcome.xhtml">
+
+            <ui:define name="content">
+                <h1>Reglas del sudoku</h1>
+                <h2>Este juego está compuesto por una cuadrícula de 9x9 casillas, dividida en regiones de 3x3 casillas. Partiendo de algunos números ya dispuestos en algunas de las casillas, hay que completar las casillas vacías con dígitos del 1 al 9 sin que se repitan por fila, columna o región.
+                </h2>
+                <h3>Reglas:</h3>
+                <h3>Regla 1: hay que completar las casillas vacías con un solo número del 1 al 9.</h3>
+                <h3>Regla 2: en una misma fila no puede haber números repetidos.</h3>
+                <h3>Regla 3: en una misma columna no puede haber números repetidos.</h3>
+                <h3>Regla 4: en una misma región no puede haber números repetidos.</h3>
+                <h3>Regla 5: la solución de un sudoku es única.</h3>
+
+
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>
+
+
