@@ -112,63 +112,23 @@ public class CheckUserPassword extends HttpServlet {
                     contexto.getNamedDispatcher("Matriz");
                  anhadirServlet.forward(request, response);
            } else{
-                    RequestDispatcher paginaError
-                        = contexto.getRequestDispatcher("/CheckUser");
-                paginaError.forward(request, response);
+                HttpSession cliente = request.getSession();
+                cliente.setAttribute("user",user);
+        
+               response.sendRedirect("CheckUser");
+//                    RequestDispatcher paginaError
+//                        = contexto.getRequestDispatcher("/CheckUser");
+//                paginaError.forward(request, response);
            }
        } catch (SQLException ex) {
              System.out.println(ex);
           
        }
-       // processRequest(request, response);
+       processRequest(request, response);
     }
 
     
 
-//        if (login.existeCuenta(user, password)) {
-//            System.out.println("Entro");
-//            if (!name.equals("")) {
-//
-//                System.out.println("vacio");
-//
-////                RequestDispatcher anhadirServlet =
-////                    //contexto.getNamedDispatcher("Matriz");
-////                 //contexto.getRequestDispatcher("/login.html");
-////                contexto.getNamedDispatcher("ServletCookie2");
-////                  anhadirServlet.forward(request, response);
-//                Cookie ck = new Cookie("name", name);
-//
-//                response.addCookie(ck);
-//
-//                // out.println("<a href='./ServletCookie2'> ServletCookie2</a>"); 
-//                //mejor redirect que forwars porque con forward me daba error
-//                response.sendRedirect(request.getContextPath() + "/ServletCookie2");
-//
-//            } else {
-//
-//                System.out.println("campo nulo");
-//
-//                RequestDispatcher paginaError
-//                        = contexto.getRequestDispatcher("/errorCookie.html");
-//
-//                paginaError.forward(request, response);
-//
-//            }
-//
-//        } else {
-//
-//            System.out.println("No Entro");
-//
-//            RequestDispatcher paginaError
-//                    = contexto.getRequestDispatcher("/error.html");
-//
-//            paginaError.forward(request, response);
-//
-//        }
-//
-//        processRequest(request, response);
-//
-//    }
     /**
      * Returns a short description of the servlet.
      *
