@@ -155,7 +155,7 @@ public class CheckUser extends HttpServlet {
              request.setAttribute("nextPage", this.getServletContext().getContextPath() + "/CheckUser");
            
              RequestDispatcher altaUser
-                    = contexto.getRequestDispatcher("/ComprobarInsercion");
+                    = contexto.getRequestDispatcher("/index.html");
             altaUser.forward(request, response);
             connection.close();
         } catch (SQLException ex) {
