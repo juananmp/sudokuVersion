@@ -113,11 +113,18 @@ public class CheckUserPassword extends HttpServlet {
                
                 HttpSession cliente = request.getSession();
                 cliente.setAttribute("user",user);
+                
+                 RequestDispatcher paginaError
+                        = contexto.getRequestDispatcher("/./faces/templateWelcome.xhtml");
+
+                paginaError.forward(request, response);
+//                response.sendRedirect("headerWelcome.xhtml");
+                
 //                hitCount=0;
 //                System.out.println(hitCount);
-                RequestDispatcher anhadirServlet =
-                    contexto.getNamedDispatcher("Matriz");
-                 anhadirServlet.forward(request, response);
+//                RequestDispatcher anhadirServlet =
+//                    contexto.getNamedDispatcher("Matriz");
+//                 anhadirServlet.forward(request, response);
            } else{
                 HttpSession cliente = request.getSession();
                 cliente.setAttribute("user",user);
@@ -126,6 +133,7 @@ public class CheckUserPassword extends HttpServlet {
 //                    RequestDispatcher paginaError
 //                        = contexto.getRequestDispatcher("/CheckUser");
 //                paginaError.forward(request, response);
+
            }
        } catch (SQLException ex) {
              System.out.println(ex);
