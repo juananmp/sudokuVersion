@@ -9,13 +9,14 @@ and open the template in the editor.
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:fn="http://java.sun.com/jsp/jstl/functions">
+    <h:outputStylesheet library="css" name="w3.css"/>
     <ui:composition> 
-        <h1>Header for Facelets #{request.contextPath}</h1>  
+        <h4>PAGINA DE WELCOME SUDOKU JUANAN</h4>  
         <ul class="topnav">
-            <li><a class="#{fn:contains(view.viewId, 'faceletInicio.xhtml') ? 'active' : ''}" href="faceletInicio.xhtml">Inicio</a></li>
-            <li><a class="#{fn:contains(view.viewId, 'faceletSudoku.xhtml') ? 'active' : ''}" href="faceletSudoku.xhtml">Jugar Sudoku</a></li>
-            <li><a class="#{fn:contains(view.viewId, 'faceletInstrucciones.xhtml') ? 'active' : ''}" href="faceletInstrucciones.xhtml">Instrucciones</a></li>            
-            <li><a class="#{fn:contains(view.viewId, 'faceletContacto.xhtml') ? 'active' : ''}" href="faceletContacto.xhtml">Contacto</a></li>            
+            <li><a class="#{fn:contains(view.viewId, 'faceletInicio.xhtml') ? 'active' : ''}" href="/sudokuVersion/faces/faceletInicio.xhtml">Inicio</a></li>
+            <li><a class="#{fn:contains(view.viewId, 'faceletSudoku.xhtml') ? 'active' : ''}" href="/sudokuVersion/faces/faceletSudoku.xhtml">Jugar Sudoku</a></li>
+            <li><a class="#{fn:contains(view.viewId, 'faceletInstrucciones.xhtml') ? 'active' : ''}" href="/sudokuVersion/faces/faceletInstrucciones.xhtml">Instrucciones</a></li>            
+            <li><a class="#{fn:contains(view.viewId, 'faceletContacto.xhtml') ? 'active' : ''}" href="/sudokuVersion/faces/faceletContacto.xhtml">Contacto</a></li>            
         </ul>
     </ui:composition>  
 </html>
