@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.inject.Named;
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -54,6 +55,9 @@ public class Matriz extends HttpServlet {
         String user = (String)cliente.getAttribute("user");
          String comprobar = request.getParameter("comprobar"); //Saber si nos piden comprobar, esto siempre escucha y siempre va a ser null hasta que pulse el botón de comprobar 
        //cokokie
+        //parametro de inicilizacion y ServletConfig tiene un metodo llamado getinitparameter
+        ServletConfig sc = this.getServletConfig();
+        String saludo =  sc.getInitParameter("saludo");
         if (comprobar==null){
             Cookie[] cks = request.getCookies();
          
@@ -110,10 +114,13 @@ public class Matriz extends HttpServlet {
             out.println("<html>");
             out.println("<head>");
             out.println("<title>Servlet Matriz</title>");
+            out.println("<link rel=\"stylesheet\" href=\"./resources/css/w3.css\">");
+            
              out.println("<link rel=\"stylesheet\" href=\"./resources/css/cssTabla.css\">");
             
             out.println("</head>");
             out.println("<body>");
+            out.println("<h4>"+saludo+ "</h4>");
              out.println(" <form method=\"post\" action=\"/sudokuVersion/Matriz\"><table id=\"grid\">");
              
 //cogemos otra vez la matriz, volvemos a coger la casa, puede ser nueva o ya con datos
@@ -155,6 +162,7 @@ public class Matriz extends HttpServlet {
             
             out.println("<button>Almacenar</button>");
             
+            
             out.println("</form>");
              if(comprobar!=null){
              int[][] numeroYposicion = (int[][]) cliente.getAttribute("numeroYposicion");
@@ -169,7 +177,15 @@ public class Matriz extends HttpServlet {
              }
             out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"datos\"><input type=\"hidden\" name=\"comprobar\" value=\"algo\"><button>Comprobar</button></form>");
           //cliente.invalidate();
-            
+             ServletContext ctx = getServletContext();
+            int totalUsers = (Integer) ctx.getAttribute("totalusers");
+            int currentUsers = (Integer) ctx.getAttribute("currentusers");
+       out.println("<br>");
+        out.print("<h4>"+ "total users=" + totalUsers+ "</h4>");
+        out.print("<br>");
+        out.println("<h4>"+"current users= " + currentUsers +"</h4>");
+          out.print("<br>");
+            out.print("<br>");
           
           
             // out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"guardar\"><input type=\"hidden\" name=\"guardar\" value=\"guardar\"><button>Guardar</button></form>");
