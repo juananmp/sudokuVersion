@@ -15,6 +15,7 @@ import java.sql.Statement;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.inject.Named;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -28,6 +29,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author janto
  */
+
 public class Matriz extends HttpServlet {
 
     /**
@@ -107,7 +109,9 @@ public class Matriz extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet Matriz</title>");            
+            out.println("<title>Servlet Matriz</title>");
+             out.println("<link rel=\"stylesheet\" href=\"./resources/css/cssTabla.css\">");
+            
             out.println("</head>");
             out.println("<body>");
              out.println(" <form method=\"post\" action=\"/sudokuVersion/Matriz\"><table id=\"grid\">");
