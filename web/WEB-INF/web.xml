@@ -1,5 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Development</param-value>
+    </context-param>
+    <filter>
+        <filter-name>FiltroLongUser</filter-name>
+        <filter-class>Matrizsudokuversion.FiltroLongUser</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>FiltroLongUser</filter-name>
+        <servlet-name>CheckUserPassword</servlet-name>
+    </filter-mapping>
+    <filter>
+        <filter-name>FiltroReintentos</filter-name>
+        <filter-class>Matrizsudokuversion.FiltroReintentos</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>FiltroReintentos</filter-name>
+        <servlet-name>CheckUser</servlet-name>
+    </filter-mapping>
     <servlet>
         <servlet-name>Database</servlet-name>
         <servlet-class>Matrizsudokuversion.Database</servlet-class>
@@ -19,6 +39,15 @@
     <servlet>
         <servlet-name>Cookie</servlet-name>
         <servlet-class>Matrizsudokuversion.ServletCookie</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>ComprobarInsercion</servlet-name>
+        <servlet-class>Matrizsudokuversion.ComprobarInsercion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>Database</servlet-name>
@@ -40,9 +69,20 @@
         <servlet-name>Cookie</servlet-name>
         <url-pattern>/Cookie</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>ComprobarInsercion</servlet-name>
+        <url-pattern>/ComprobarInsercion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/faces/*</url-pattern>
+    </servlet-mapping>
     <session-config>
         <session-timeout>
             30
         </session-timeout>
     </session-config>
+    <welcome-file-list>
+        <welcome-file>faces/index.xhtml</welcome-file>
+    </welcome-file-list>
 </web-app>

@@ -33,9 +33,11 @@ public class CheckUserPassword extends HttpServlet {
  DataSource datasource;
    Statement statement = null;
    Connection connection = null;
+  // int hitCount;
    
    @Override
     public void init() {
+     //    hitCount=0;
         try {
             InitialContext initialContext = new InitialContext();
             datasource = (DataSource) initialContext.lookup("jdbc/sudoku2");
@@ -91,6 +93,10 @@ public class CheckUserPassword extends HttpServlet {
         PrintWriter out = response.getWriter();
          String user = request.getParameter("user");
         String password = request.getParameter("password");
+//         hitCount++;
+//        System.out.println(hitCount);
+//        
+       
         ServletContext contexto = request.getServletContext();
          try {
             
@@ -107,7 +113,8 @@ public class CheckUserPassword extends HttpServlet {
                
                 HttpSession cliente = request.getSession();
                 cliente.setAttribute("user",user);
-        
+//                hitCount=0;
+//                System.out.println(hitCount);
                 RequestDispatcher anhadirServlet =
                     contexto.getNamedDispatcher("Matriz");
                  anhadirServlet.forward(request, response);

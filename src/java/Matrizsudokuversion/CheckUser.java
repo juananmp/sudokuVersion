@@ -45,6 +45,7 @@ public class CheckUser extends HttpServlet {
    
    @Override
     public void init() {
+      
         try {
             InitialContext initialContext = new InitialContext();
             datasource = (DataSource) initialContext.lookup("jdbc/sudoku2");
@@ -85,6 +86,7 @@ public class CheckUser extends HttpServlet {
         ServletContext contexto = request.getServletContext();
           HttpSession cliente = request.getSession();
         String user = (String)cliente.getAttribute("user");
+        
        
          System.out.println(user+ "primer paso<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
           try {
