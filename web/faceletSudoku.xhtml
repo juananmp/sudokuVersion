@@ -15,7 +15,15 @@ and open the template in the editor.
             <ui:define name="content">
                 <h1>Sudoku</h1>
                  <h3>Ejemplo 1</h3>
-                <li><a href="Matriz">Ir al </a></li>
+                 <script> 
+function abrir(url) { 
+open(url,'','top=3000,left=300,width=1400,height=500') ; 
+} 
+</script>
+
+                 
+                <li><a href="javascript:abrir('/sudokuVersion/Matriz')">Pulse Aqui Para Jugar</a></li>
+                
                 
             </ui:define>
 
