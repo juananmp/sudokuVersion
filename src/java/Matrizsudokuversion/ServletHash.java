@@ -63,8 +63,11 @@ public class ServletHash extends HttpServlet {
 
         System.out.println("getServletContext():"+ getServletContext());
        ServletContext context = getServletConfig().getServletContext();
-        int primo = Integer.parseInt(context.getInitParameter("primo"));
-        System.out.println("primo"+primo);
+        int primo1 = Integer.parseInt(context.getInitParameter("primo1"));
+        System.out.println("primo1"+primo1);
+       
+        int primo2 = Integer.parseInt(context.getInitParameter("primo2"));
+        System.out.println("primo2"+primo2);
         
         HttpSession cliente = request.getSession();
        String user= (String)cliente.getAttribute("user");
@@ -72,8 +75,8 @@ public class ServletHash extends HttpServlet {
         
        
          ServletContext contexto = request.getServletContext();
-         int result=17;
-         result= primo*result+password.hashCode();
+         int result=primo1;
+         result= primo2*result+password.hashCode();
      
          System.out.println("valores hashcode user password"+user+password+result);
       
