@@ -54,11 +54,14 @@ public class Matriz extends HttpServlet {
         HttpSession cliente = request.getSession();
         String user = (String)cliente.getAttribute("user");
          String comprobar = request.getParameter("comprobar"); //Saber si nos piden comprobar, esto siempre escucha y siempre va a ser null hasta que pulse el botón de comprobar 
-       //cokokie
+       
         //parametro de inicilizacion y ServletConfig tiene un metodo llamado getinitparameter
         ServletConfig sc = this.getServletConfig();
         String saludo =  sc.getInitParameter("saludo");
+        
+        //cokokie
         if (comprobar==null){
+             int[][] numeroYposicion = new int[9][9];
             Cookie[] cks = request.getCookies();
          
           for (int i=0; i< cks.length; i++){
@@ -66,8 +69,8 @@ public class Matriz extends HttpServlet {
                System.out.println(i);
               String identificador = ckActual.getName();
               String valor = ckActual.getValue();
-              if(identificador.equals("sudoku")&& valor.equals(user)){
-                int[][] numeroYposicion = db.plantillaIntermedia(user);
+              if(identificador.equals(user)&& valor.equals("sudoku")){
+                numeroYposicion = db.plantillaIntermedia(user);
                 
                   System.out.println("he llegado antes----------------<");
                cliente.setAttribute("numeroYposicion", numeroYposicion); //aqui se subscribe
@@ -166,11 +169,11 @@ public class Matriz extends HttpServlet {
             out.println("</form>");
              if(comprobar!=null){
              int[][] numeroYposicion = (int[][]) cliente.getAttribute("numeroYposicion");
-             Cookie ck = new Cookie("sudoku",user);
-              ck.setMaxAge(60*60*24);
+            Cookie ck = new Cookie(user,"sudoku");
+            ck.setMaxAge(60*60*24);
             response.addCookie(ck);
             
-           
+          // db.doGet(request, response);
 
             db.guardar(user, numeroYposicion);
 
