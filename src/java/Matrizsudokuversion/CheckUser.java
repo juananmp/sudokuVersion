@@ -140,11 +140,35 @@ public class CheckUser extends HttpServlet {
         cliente.setAttribute("user", user);
         cliente.setAttribute("password", password);
         System.out.println("user"+user+"password"+password);
-        if (!(user.length()>3) || password.equals(""))
+        
+         ServletContext contexto = request.getServletContext();   
+       
+         System.out.println(user+ password+ "primer paso<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
+          try {
+            
+          String query=null;
+              System.out.println(user+"segundo paso<<<<<<<<<<<<<<<<<");
+           query = "SELECT * FROM login WHERE user like '"+user+"'";
+              System.out.println(user+ "tercer paso<<<<<<<<<<<<<<<<<");
+           ResultSet resulSet = null;
+           connection = datasource.getConnection();
+           statement = connection.createStatement();
+           resulSet = statement.executeQuery(query);
+          
+           //con el while si el user 
+           while(resulSet.next()){
+               
+               RequestDispatcher paginaError
+                    = contexto.getRequestDispatcher("/esteUsuarioYaExiste.html");
+
+            paginaError.forward(request, response);
+           } 
+         if (!(user.length()>3) || password.equals(""))
         {
-               System.out.println("Unauthorized request");
+           
+             System.out.println("Unauthorized request");
             System.out.println("######################################################\n\n");
-            response.sendRedirect("registro.html");
+            response.sendRedirect("registroIncorrecto.html");
             System.out.println("Tu usuario tiene menos de 3 digitos, introduzca un user por pafovr mayor que 3 digitos");
         }
         else
@@ -153,6 +177,13 @@ public class CheckUser extends HttpServlet {
            response.sendRedirect("ServletHash");
         }
         
+          
+       } catch (SQLException ex) {
+             System.out.println(ex);
+          
+       }
+        
+       
     }
 //         System.out.println(user + password+ "-----------------------------------------<");
 //       
