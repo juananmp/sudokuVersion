@@ -93,15 +93,25 @@ public class CheckUserPassword extends HttpServlet {
         PrintWriter out = response.getWriter();
          String user = request.getParameter("user");
         String password = request.getParameter("password");
-//         hitCount++;
-//        System.out.println(hitCount);
-//        
+        
+        System.out.println("getServletContext():"+ getServletContext());
+       ServletContext context = getServletConfig().getServletContext();
+        int primo = Integer.parseInt(context.getInitParameter("primo"));
+        System.out.println("primo"+primo);
+        
+        
        
-        ServletContext contexto = request.getServletContext();
+         ServletContext contexto = request.getServletContext();
+         int result=17;
+         result= primo*result+password.hashCode();
+     
+         System.out.println("valores hashcode user password"+user+password+result);
+       
+   
          try {
             
           String query=null;
-           query = "SELECT * FROM login WHERE user like '"+user+"' AND password='"+password+"'";
+           query = "SELECT * FROM login WHERE user like '"+user+"' AND password='"+result+"'";
            ResultSet resulSet = null;
            connection = datasource.getConnection();
            statement = connection.createStatement();
@@ -113,7 +123,7 @@ public class CheckUserPassword extends HttpServlet {
                
                 HttpSession cliente = request.getSession();
                 cliente.setAttribute("user",user);
-                
+               // contexto = request.getSession().getServletContext();
                  RequestDispatcher paginaError
                         = contexto.getRequestDispatcher("/./faces/templateWelcome.xhtml");
 
