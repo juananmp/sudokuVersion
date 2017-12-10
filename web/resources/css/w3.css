@@ -319,6 +319,19 @@ body{
 /*    como las letras del h1 nos quedan superpuestas al icono*/
     padding: 40px 75px;
 }
+.loginbox4{
+    width: 450px;
+    height: 500px;
+    background: #000;
+    color: #fff;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+/*    como las letras del h1 nos quedan superpuestas al icono*/
+    padding: 40px 75px;
+}
 
 .avatar{
     width: 100px;
@@ -328,19 +341,59 @@ body{
     top: -50px;
 /*    desplaza el icono hacia la izq y lo centralizo*/
     left: calc(50% - 50px);
-    
-    
+      
 }
 
+.avatar2{
+    width: 100px;
+    height: 100px;
+/*    estas dos lineas elevan el icono*/
+position: absolute;
+  top: -50px;
+  
+/*    desplaza el icono hacia la izq y lo centralizo*/
+   left: calc(50% - 50px);
+      
+}
+.avatar3{
+    width: 200px;
+    height: 200px;
+/*    estas dos lineas elevan el icono*/
+    position: absolute;
+    top: -150px;
+/*    desplaza el icono hacia la izq y lo centralizo*/
+    left: calc(50% - 90px);
+      
+}
+.avatar4{
+    width: 250px;
+    height: 250px;
+    top: -150px;
+    left: calc(10% - 40px);
+      
+}
+.avatar5{
+    margin-top: 50px;
+    width: 200px;
+    height: 200px;
+    top: -100px;
+    left: calc(10% - 40px);
+      
+}
 h1{
+    
     margin: 0;
-    padding: 0 0 20px;
+    margin-top: 15px;
+    padding: 0 20px 20px;
     text-align: center;
     font-size: 22px;
+   
+    border-bottom: 2px solid #AFAFAF; 
     color: #ffffff;
 }
 h2{
     margin: 0;
+    margin-top: 15px;
     padding: 0 0 20px;
     text-align: center;
     font-size: 22px;
@@ -361,7 +414,10 @@ h4{
     color: #ffffff;
 }
 .loginbox p{
+    color: #adb7bd;
+    font-size: 18px;
     margin: 0;
+    margin-top: 10px;
     padding: 0;
     font-weight: bold;
        
@@ -379,9 +435,9 @@ h4{
     border-bottom: 1px solid #fff;
     background: transparent;
     outline: none;
-    height: 30px;
+    height: 35px;
     color: #fff;
-    font-size: 16px;
+    font-size: 14px;
         
 }
 
@@ -409,8 +465,38 @@ h4{
     line-height: 20px;
     color: darkgrey;
 }
+.loginbox2 a{
+    text-decoration: none;
+    font-size: 20px;
+    line-height: 20px;
+    color: darkgrey;
+}
+.loginbox3 a{
+    text-decoration: none;
+    font-size: 20px;
+    line-height: 20px;
+    color: darkgrey;
+}
+.loginbox4 a{
+    text-decoration: none;
+    font-size: 20px;
+    line-height: 20px;
+    color: darkgrey;
+}
 
 .loginbox a:hover{
+    
+    color: #ffc107;
+}
+.loginbox2 a:hover{
+    
+    color: #ffc107;
+}
+.loginbox3 a:hover{
+    
+    color: #ffc107;
+}
+.loginbox4 a:hover{
     
     color: #ffc107;
 }
