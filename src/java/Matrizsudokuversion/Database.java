@@ -33,22 +33,47 @@ import javax.sql.DataSource;
  * @author janto
  */
 public class Database extends HttpServlet {
-
+ 
    DataSource datasource;
    Statement statement = null;
    Connection connection = null;
+   
    
    @Override
     public void init() {
         try {
             InitialContext initialContext = new InitialContext();
+            
             datasource = (DataSource) initialContext.lookup("jdbc/sudoku2");
         } catch (NamingException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
     }
+//    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
+//            throws ServletException, IOException {
+//        response.setContentType("text/html;charset=UTF-8");
+//        System.out.println("getServletContext():"+ getServletContext());
+//       ServletContext context = getServletConfig().getServletContext();
+//        numSudoku = Integer.parseInt(context.getInitParameter("numSudoku"));
+//        System.out.println("numSudoku"+numSudoku);
+//        try (PrintWriter out = response.getWriter()) {
+//            /* TODO output your page here. You may use following sample code. */
+//            
+//            out.println("<!DOCTYPE html>");
+//            out.println("<html>");
+//            out.println("<head>");
+//            out.println("<title>Servlet ServletHash</title>");            
+//            out.println("</head>");
+//            out.println("<body>");
+//            out.println("<h1>Servlet ServletHash at " + request.getContextPath() + "</h1>");
+//            out.println("</body>");
+//            out.println("</html>");
+//        }
+//    }
 public boolean existeCuenta(String user, String password) {
        init();
+       
        try {
           String query=null;
            query = "SELECT * FROM login WHERE user like '"+user+"' AND password='"+password+"'";
@@ -138,6 +163,7 @@ public boolean existeCuenta(String user, String password) {
         } finally {
             out.close();
         }
+//        processRequest(request, response);
     }
 
     /**
@@ -151,43 +177,49 @@ public boolean existeCuenta(String user, String password) {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        String user = request.getParameter("user");
-        String password = request.getParameter("password");
-        ServletContext contexto = request.getServletContext();
-        String query = null;
-
-        query = "insert into login values('"
-                + user + "'," + password + ")";
-        Statement statement = null;
-        Connection connection = null;
-        try {
-            connection = datasource.getConnection();
-            statement = connection.createStatement();
-            statement.executeUpdate(query);
-
-            request.setAttribute("nextPage", this.getServletContext().getContextPath() + "/Database");
-            RequestDispatcher paginaAltas
-                    = contexto.getRequestDispatcher("/Ejemplo10/amigoInsertado.jsp");
-            paginaAltas.forward(request, response);
-        } catch (SQLException ex) {
-            gestionarErrorEnConsultaSQL(ex, request, response);
-        } finally {
-
-            if (statement != null) {
-                try {
-                    statement.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException ex) {
-                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
+        
+        
+//        String user = request.getParameter("user");
+//        String password = request.getParameter("password");
+//       
+//        String query = null;
+//
+//        query = "insert into login values('"
+//                + user + "'," + password + ")";
+//       
+//ServletContext contexto = request.getServletContext();
+////        String numSudoku = (String)contexto.getAttribute("numSudoku");
+////        System.out.println("en le isertar post numsudoku vale"+ numSudoku);
+//        Statement statement = null;
+//        Connection connection = null;
+//        try {
+//            connection = datasource.getConnection();
+//            statement = connection.createStatement();
+//            statement.executeUpdate(query);
+//
+//            request.setAttribute("nextPage", this.getServletContext().getContextPath() + "/Database");
+//            RequestDispatcher paginaAltas
+//                    = contexto.getRequestDispatcher("/Ejemplo10/amigoInsertado.jsp");
+//            paginaAltas.forward(request, response);
+//        } catch (SQLException ex) {
+//            gestionarErrorEnConsultaSQL(ex, request, response);
+//        } finally {
+//
+//            if (statement != null) {
+//                try {
+//                    statement.close();
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//            if (connection != null) {
+//                try {
+//                    connection.close();
+//                } catch (SQLException ex) {
+//                    Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+//            }
+//        }
 
     }
 
@@ -209,14 +241,14 @@ public boolean existeCuenta(String user, String password) {
     }
     public void guardar(String user,  int[][] intermedia){
      init();
-     
+        
+        
         int i=0;
         int j=0;
         int fila;
         int col;
         int valor;
-        int numSudoku=1;
-      
+         int numSudoku=1;
         borrar(user);
         while(i<=8){
                     j=0;
