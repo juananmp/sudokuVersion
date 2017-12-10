@@ -71,26 +71,26 @@ public class Database extends HttpServlet {
 //            out.println("</html>");
 //        }
 //    }
-public boolean existeCuenta(String user, String password) {
-       init();
-       
-       try {
-          String query=null;
-           query = "SELECT * FROM login WHERE user like '"+user+"' AND password='"+password+"'";
-           ResultSet resulSet = null;
-           connection = datasource.getConnection();
-           statement = connection.createStatement();
-           resulSet = statement.executeQuery(query);
-           while(resulSet.next()){
-           return true;
-           }
-           return false;
-       } catch (SQLException ex) {
-           System.out.println("No existe el usuario");
-           return false;
-       }
-           
-    }
+//public boolean existeCuenta(String user, String password) {
+//       init();
+//       
+//       try {
+//          String query=null;
+//           query = "SELECT * FROM login WHERE user like '"+user+"' AND password='"+password+"'";
+//           ResultSet resulSet = null;
+//           connection = datasource.getConnection();
+//           statement = connection.createStatement();
+//           resulSet = statement.executeQuery(query);
+//           while(resulSet.next()){
+//           return true;
+//           }
+//           return false;
+//       } catch (SQLException ex) {
+//           System.out.println("No existe el usuario");
+//           return false;
+//       }
+//           
+//    }
 
     /**
      * Handles the HTTP <code>GET</code> method.
