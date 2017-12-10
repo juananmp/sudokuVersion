@@ -167,7 +167,7 @@ public class Matriz extends HttpServlet {
             
             
             out.println("</form>");
-             if(comprobar!=null){
+//             if(comprobar!=null){
              int[][] numeroYposicion = (int[][]) cliente.getAttribute("numeroYposicion");
             Cookie ck = new Cookie(user,"sudoku");
             ck.setMaxAge(60*60*24);
@@ -177,7 +177,7 @@ public class Matriz extends HttpServlet {
 
             db.guardar(user, numeroYposicion);
 
-             }
+//             }
             out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"datos\"><input type=\"hidden\" name=\"comprobar\" value=\"algo\"><button>Comprobar</button></form>");
           //cliente.invalidate();
              ServletContext ctx = getServletContext();
