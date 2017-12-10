@@ -43,7 +43,7 @@ public class logOut extends HttpServlet {
          out.println("   <div class=\"loginbox\">");
         out.println("<h1>Has hecho logOut</h1>");
         out.println("<br>");
-        out.println("<a href=\"cierreSesion.html\">Si quieres volver a logearte pulse aqui</a><br>");
+        out.println("<a href=\"index.html\">Si quieres volver a logearte pulse aqui</a><br>");
         out.println("</div>");
         out.close();
         
