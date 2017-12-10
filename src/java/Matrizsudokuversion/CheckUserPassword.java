@@ -30,14 +30,14 @@ import javax.sql.DataSource;
  * @author janto
  */
 public class CheckUserPassword extends HttpServlet {
- DataSource datasource;
-   Statement statement = null;
-   Connection connection = null;
-  // int hitCount;
-   
-   @Override
+
+    DataSource datasource;
+    Statement statement = null;
+    Connection connection = null;
+
+    @Override
     public void init() {
-     //    hitCount=0;
+
         try {
             InitialContext initialContext = new InitialContext();
             datasource = (DataSource) initialContext.lookup("jdbc/sudoku2");
@@ -45,7 +45,7 @@ public class CheckUserPassword extends HttpServlet {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-   
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -54,7 +54,7 @@ public class CheckUserPassword extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet CheckUserPassword</title>");            
+            out.println("<title>Servlet CheckUserPassword</title>");
             out.println("</head>");
             out.println("<body>");
             out.println("<h1>Servlet CheckUserPassword at " + request.getContextPath() + "</h1>");
@@ -63,7 +63,6 @@ public class CheckUserPassword extends HttpServlet {
         }
     }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -89,73 +88,52 @@ public class CheckUserPassword extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        PrintWriter out = response.getWriter();
-         String user = request.getParameter("user");
+
+        String user = request.getParameter("user");
         String password = request.getParameter("password");
-        
-        System.out.println("getServletContext():"+ getServletContext());
-       ServletContext context = getServletConfig().getServletContext();
+
+        ServletContext context = getServletConfig().getServletContext();
         int primo2 = Integer.parseInt(context.getInitParameter("primo2"));
-        System.out.println("primo2"+primo2);
-        
-        System.out.println("getServletContext():"+ getServletContext());
-      
+
         int primo1 = Integer.parseInt(context.getInitParameter("primo1"));
-        System.out.println("primo1"+primo1);
-        
-         ServletContext contexto = request.getServletContext();
+
+        ServletContext contexto = request.getServletContext();
         int result = primo1;
-        result= primo2*result+password.hashCode();
-     
-         System.out.println("valores hashcode user password"+user+password+result);
-       
-   
-         try {
-            
-          String query=null;
-           query = "SELECT * FROM login WHERE user like '"+user+"' AND password='"+result+"'";
-           ResultSet resulSet = null;
-           connection = datasource.getConnection();
-           statement = connection.createStatement();
-           resulSet = statement.executeQuery(query);
-          
-           //con el while si el user y passwd estan en la bbdd lo ejecuta
-           if(resulSet.next()){
-               //crearse sesion de cliente y guardar en la sesion el atributo user
-               
+        result = primo2 * result + password.hashCode();
+
+        try {
+
+            String query = null;
+            query = "SELECT * FROM login WHERE user like '" + user + "' AND password='" + result + "'";
+            ResultSet resulSet = null;
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            resulSet = statement.executeQuery(query);
+
+            //con el while si el user y passwd estan en la bbdd lo ejecuta
+            if (resulSet.next()) {
+                //crearse sesion de cliente y guardar en la sesion el atributo user
                 HttpSession cliente = request.getSession();
-                cliente.setAttribute("user",user);
-               // contexto = request.getSession().getServletContext();
-                 RequestDispatcher paginaError
+                cliente.setAttribute("user", user);
+
+                RequestDispatcher paginaError
                         = contexto.getRequestDispatcher("/./faces/templateWelcome.xhtml");
 
                 paginaError.forward(request, response);
-//                response.sendRedirect("headerWelcome.xhtml");
-                
-//                hitCount=0;
-//                System.out.println(hitCount);
-//                RequestDispatcher anhadirServlet =
-//                    contexto.getNamedDispatcher("Matriz");
-//                 anhadirServlet.forward(request, response);
-           } else{
+
+            } else {
                 HttpSession cliente = request.getSession();
-                cliente.setAttribute("user",user);
-        
-               response.sendRedirect("CheckUser");
-//                    RequestDispatcher paginaError
-//                        = contexto.getRequestDispatcher("/CheckUser");
-//                paginaError.forward(request, response);
+                cliente.setAttribute("user", user);
 
-           }
-       } catch (SQLException ex) {
-             System.out.println(ex);
-          
-       }
-       processRequest(request, response);
+                response.sendRedirect("CheckUser");
+
+            }
+        } catch (SQLException ex) {
+            System.out.println(ex);
+
+        }
+        processRequest(request, response);
     }
-
-    
 
     /**
      * Returns a short description of the servlet.
