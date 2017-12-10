@@ -1,0 +1,51 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 04-dic-2017, 19:42:10
+    Author     : janto
+*/
+
+
+
+.cell input {
+    display: inline-block;
+    float: left;
+
+    border: 1px solid black;
+    width: 40px;
+    height: 40px;
+
+    text-align: center;
+    font-size: 30px;
+}
+table {
+  margin:1em auto;
+     margin-top: 150px;
+
+    border: 3px solid #000000;
+}
+td {
+  height:30px;
+  width:1px;
+  border:1px solid;
+  text-align:center;
+}
+/*td lo coloca por columna el borde de la zquierda del todo*/
+td:first-child {
+  border-left: 3px solid;
+}
+
+/*las tres de la derecha por columna vertical*/
+td:nth-child(3n) {
+  border-right: 4px brown solid ;
+}
+tr:first-child {
+  border-top: 3px solid;
+}
+/*las tres de la derecha por columna horizontal*/
+tr:nth-child(3n) td {
+  border-bottom: 4px brown solid ;
+}
