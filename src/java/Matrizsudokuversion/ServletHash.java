@@ -20,6 +20,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 /**
@@ -28,7 +29,7 @@ import javax.sql.DataSource;
  */
 public class ServletHash extends HttpServlet {
 int primo;
-String password;
+//String password;
  DataSource datasource;
    Statement statement = null;
    Connection connection = null;
@@ -58,41 +59,45 @@ String password;
         response.setContentType("text/html;charset=UTF-8");
         
         PrintWriter out = response.getWriter();
-        out.println("LO LOGRASTEEEEEEEEE");
+       
 
 //        System.out.println("getServletContext():"+ getServletContext());
 //       ServletContext context = getServletConfig().getServletContext();
 //        int primo = Integer.parseInt(context.getInitParameter("primo"));
 //        System.out.println("primo"+primo);
-//        String user = request.getParameter("user");
-//        String password = request.getParameter("password");
-//         ServletContext contexto = request.getServletContext();
+        HttpSession cliente = request.getSession();
+       String user= (String)cliente.getAttribute("user");
+        String password = (String)cliente.getAttribute("password");
+        
+       
+        System.out.println("valores hashcode user password"+user+password);
+         ServletContext contexto = request.getServletContext();
 //       
 //       int i = hashCode();
-//        String query = null;
+        String query = null;
 //      
 //        System.out.println(user + password+ i+"-----------------------------------------<");
-//        query = "INSERT INTO login VALUES ('"+ user + "', '"+ i +"')";
-//         Statement statement = null;
-//        Connection connection = null;
-//        try {
-//            connection = datasource.getConnection();
-//            statement = connection.createStatement();
-//            statement.executeUpdate(query);
-//
-//             request.setAttribute("nextPage", this.getServletContext().getContextPath() + "/CheckUser");
-//             
-//               RequestDispatcher altaUser
+        query = "INSERT INTO login VALUES ('"+ user + "', '"+ password +"')";
+         Statement statement = null;
+        Connection connection = null;
+        try {
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
+
+             request.setAttribute("nextPage", this.getServletContext().getContextPath() + "/ServletHash");
+             
+               RequestDispatcher altaUser
+                    = contexto.getRequestDispatcher("/index.html");
+            altaUser.forward(request, response);
+           
+//             RequestDispatcher altaUser
 //                    = contexto.getRequestDispatcher("/index.html");
 //            altaUser.forward(request, response);
-//           
-////             RequestDispatcher altaUser
-////                    = contexto.getRequestDispatcher("/index.html");
-////            altaUser.forward(request, response);
-//            connection.close();
-//        } catch (SQLException ex) {
-//            System.out.println(ex);
-//        } 
+            connection.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        } 
        
         
     }
