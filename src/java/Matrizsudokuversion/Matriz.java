@@ -30,7 +30,6 @@ import javax.servlet.http.HttpSession;
  *
  * @author janto
  */
-
 public class Matriz extends HttpServlet {
 
     /**
@@ -45,45 +44,39 @@ public class Matriz extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
+
         Database db = new Database();
 
         int[][] matriz = db.plantilla("Inicial");
         int[][] solucion = db.plantilla("Final");
-        
+
         HttpSession cliente = request.getSession();
-        String user = (String)cliente.getAttribute("user");
-         String comprobar = request.getParameter("comprobar"); //Saber si nos piden comprobar, esto siempre escucha y siempre va a ser null hasta que pulse el botón de comprobar 
-       
+        String user = (String) cliente.getAttribute("user");
+        String comprobar = request.getParameter("comprobar"); //Saber si nos piden comprobar, esto siempre escucha y siempre va a ser null hasta que pulse el botón de comprobar 
+
         //parametro de inicilizacion y ServletConfig tiene un metodo llamado getinitparameter
         ServletConfig sc = this.getServletConfig();
-        String saludo =  sc.getInitParameter("saludo");
-        
-        //cokokie
-        if (comprobar==null){
-             int[][] numeroYposicion = new int[9][9];
+        String saludo = sc.getInitParameter("saludo");
+
+        //cockie
+        if (comprobar == null) {
+            int[][] numeroYposicion = new int[9][9];
             Cookie[] cks = request.getCookies();
-         
-          for (int i=0; i< cks.length; i++){
-              Cookie ckActual = cks[i];
-               System.out.println(i);
-              String identificador = ckActual.getName();
-              String valor = ckActual.getValue();
-              if(identificador.equals(user)&& valor.equals("sudoku")){
-                numeroYposicion = db.plantillaIntermedia(user);
-                
-                  System.out.println("he llegado antes----------------<");
-               cliente.setAttribute("numeroYposicion", numeroYposicion); //aqui se subscribe
-                   System.out.println("he llegado despues request----------------<");        
-                
-                 
-              }
-                      
-          }
+
+            for (int i = 0; i < cks.length; i++) {
+                Cookie ckActual = cks[i];
+                System.out.println(i);
+                String identificador = ckActual.getName();
+                String valor = ckActual.getValue();
+                if (identificador.equals(user) && valor.equals("sudoku")) {
+                    numeroYposicion = db.plantillaIntermedia(user);
+
+                    cliente.setAttribute("numeroYposicion", numeroYposicion); //aqui se subscribe
+                }
+
+            }
         }
-        
-       
-      
+
         //la primera vez que entre el valor de numeroYposicion va a ser nulo
         if (cliente.getAttribute("numeroYposicion") != null) {//si existe el numeroYposcion es que la partida ha empezado
             System.out.println("la partida ha ocmenzado");
@@ -94,16 +87,14 @@ public class Matriz extends HttpServlet {
                         //vas habitación por habitación y ves que hay un número en ella, cuando vuelve y dice ya no esta este numero lo sobreescribimos
                         int[][] numeroYposicion = (int[][]) cliente.getAttribute("numeroYposicion");
                         numeroYposicion[m][k] = Integer.parseInt(request.getParameter("numero" + m + k));
-                        //mirar
+
                         request.setAttribute("numeroYposicion", numeroYposicion); //aqui se subscribe
-                        
+
                     }
 
                 }
             }
             //no hay casa la creo
-           
-            
         } else { // si no existe numeroYposcion lo inicilazimos
             //se guardan las respuestas del cliente en un int bidimensional
             int[][] numeroYposicion = new int[9][9];
@@ -118,18 +109,15 @@ public class Matriz extends HttpServlet {
             out.println("<head>");
             out.println("<title>Servlet Matriz</title>");
             out.println("<link rel=\"stylesheet\" href=\"./resources/css/w3.css\">");
-            
-             out.println("<link rel=\"stylesheet\" href=\"./resources/css/cssTabla.css\">");
-            
+            out.println("<link rel=\"stylesheet\" href=\"./resources/css/cssTabla.css\">");
             out.println("</head>");
             out.println("<body>");
-            out.println("<h4>"+saludo+ "</h4>");
-             out.println(" <form method=\"post\" action=\"/sudokuVersion/Matriz\"><table id=\"grid\">");
-             
-//cogemos otra vez la matriz, volvemos a coger la casa, puede ser nueva o ya con datos
+            out.println("<h4>" + saludo + "</h4>");
+            out.println(" <form method=\"post\" action=\"/sudokuVersion/Matriz\"><table id=\"grid\">");
+            //cogemos otra vez la matriz, volvemos a coger la casa, puede ser nueva o ya con datos
             int[][] contenido = (int[][]) cliente.getAttribute("numeroYposicion");
-//estos 2 bucles nos sirven para insertar los inputs, las cajas de texto
-//volvemos a recorrer por piso y las habitaciones
+            //estos 2 bucles nos sirven para insertar los inputs, las cajas de texto
+            //volvemos a recorrer por piso y las habitaciones
             for (int i = 0; i < matriz.length; i++) {//matriz es matriz plantilla
                 //tr fila
                 out.println("  <tr>");
@@ -139,18 +127,18 @@ public class Matriz extends HttpServlet {
                         out.println("<td  class=\"cell\"> <input type=\"text\" value=\"" + matriz[i][j] + "\" disabled></td>"); //como ya hemos definido que matriz es la plantilla queremos que inicialmente esos valores esten bloqueados
                     } else {//si es 0 es que ahi deemos escribir
                         //dentro del else comprobamos si hemos escrito algo ya o no y si decidimos comprobar pintarlo en verde o rojo
-         //si casa no esta vacia y la habitacion no tiene 0
+                        //si casa no esta vacia y la habitacion no tiene 0
                         if (contenido != null && contenido[i][j] != 0) {
                             //comprobar es saber si es un número 
                             // && contenido[i][j]<1 && contenido[i][j]>9
-                            if (comprobar(Integer.toString(contenido[i][j]))&& contenido[i][j]>0 && contenido[i][j]<10) { 
-                                if(comprobar!=null){//Si nos han pedido comprobar pinto
-                                out.println("<td  class=\"cell\"><input style=\"background:"+resolver(i, j, contenido[i][j], solucion)
-                                        +";\" type=\"text\" name=\"numero" + i + "" + j + "\" value=\"" + contenido[i][j] + "\"></td>");
-                                }else{//Si no nos piden comprobar NO pinto
-                                out.println("<td  class=\"cell\"><input type=\"text\" name=\"numero" + i + "" + j + "\" value=\"" + contenido[i][j] + "\"></td>");
+                            if (comprobar(Integer.toString(contenido[i][j])) && contenido[i][j] > 0 && contenido[i][j] < 10) {
+                                if (comprobar != null) {//Si nos han pedido comprobar pinto
+                                    out.println("<td  class=\"cell\"><input style=\"background:" + resolver(i, j, contenido[i][j], solucion)
+                                            + ";\" type=\"text\" name=\"numero" + i + "" + j + "\" value=\"" + contenido[i][j] + "\"></td>");
+                                } else {//Si no nos piden comprobar NO pinto
+                                    out.println("<td  class=\"cell\"><input type=\"text\" name=\"numero" + i + "" + j + "\" value=\"" + contenido[i][j] + "\"></td>");
                                 }
-                                }else{
+                            } else {
                                 out.println("<td  class=\"cell\"><input type=\"text\" name=\"numero" + i + "" + j + "\"></td>");
                             }
                         } else { // sino imprime la caja de texto con el 0
@@ -159,61 +147,44 @@ public class Matriz extends HttpServlet {
                     }
                 }
                 out.println("</tr>");
-                            }
-            
+            }
             out.println("</table>");
-            
             out.println("<button>Almacenar</button>");
-            
-            
             out.println("</form>");
-//             if(comprobar!=null){
-             int[][] numeroYposicion = (int[][]) cliente.getAttribute("numeroYposicion");
-            Cookie ck = new Cookie(user,"sudoku");
-            ck.setMaxAge(60*60*24);
+
+            int[][] numeroYposicion = (int[][]) cliente.getAttribute("numeroYposicion");
+            Cookie ck = new Cookie(user, "sudoku");
+            ck.setMaxAge(60 * 60 * 24 * 7);
             response.addCookie(ck);
-            
-          // db.doGet(request, response);
 
             db.guardar(user, numeroYposicion);
 
-//             }
             out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"datos\"><input type=\"hidden\" name=\"comprobar\" value=\"algo\"><button>Comprobar</button></form>");
-          //cliente.invalidate();
-             ServletContext ctx = getServletContext();
+            //cliente.invalidate();
+            ServletContext ctx = getServletContext();
             int totalUsers = (Integer) ctx.getAttribute("totalusers");
             int currentUsers = (Integer) ctx.getAttribute("currentusers");
-       out.println("<br>");
-        out.print("<h4>"+ "total users=" + totalUsers+ "</h4>");
-        out.print("<br>");
-        out.println("<h4>"+"current users= " + currentUsers +"</h4>");
-          out.print("<br>");
+            out.println("<br>");
+            out.print("<h4>" + "total users=" + totalUsers + "</h4>");
             out.print("<br>");
-          
-          
-            // out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"guardar\"><input type=\"hidden\" name=\"guardar\" value=\"guardar\"><button>Guardar</button></form>");
-         
-            
+            out.println("<h4>" + "current users= " + currentUsers + "</h4>");
+            out.print("<br>");
+            out.print("<br>");
             out.println("<h1>Servlet Matriz at " + request.getContextPath() + "</h1>");
             out.println(user);
             out.println("</body>");
             out.println("</html>");
         }
     }
-   
-  
-       
 
-       
-
-public String resolver(int x,int y, int resp, int[][] solucion) {
-        if(solucion[x][y]==resp){
+    public String resolver(int x, int y, int resp, int[][] solucion) {
+        if (solucion[x][y] == resp) {
             return "green";
-        }else{
+        } else {
             return "red";
         }
     }
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -225,8 +196,7 @@ public String resolver(int x,int y, int resp, int[][] solucion) {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-          
-        
+
         processRequest(request, response);
     }
 
@@ -241,8 +211,7 @@ public String resolver(int x,int y, int resp, int[][] solucion) {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-//       String user = request.getParameter("user");
-//        request.setAttribute("user", user);
+
         processRequest(request, response);
     }
 
@@ -255,8 +224,8 @@ public String resolver(int x,int y, int resp, int[][] solucion) {
     public String getServletInfo() {
         return "Short description";
     }// </editor-fold>
-    
- public boolean comprobar(String celda) {
+
+    public boolean comprobar(String celda) {
         try { //saber si es un numero lo que me manda
             Integer.parseInt(celda);
             return true;
