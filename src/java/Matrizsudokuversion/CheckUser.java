@@ -136,36 +136,41 @@ public class CheckUser extends HttpServlet {
        
         String user = request.getParameter("user");
         String password = request.getParameter("password");
-         System.out.println(user + password+ "-----------------------------------------<");
-       
-        ServletContext contexto = request.getServletContext();
-       
-        String query = null;
-      
-        System.out.println(user + password+ "-----------------------------------------<");
-        query = "INSERT INTO login VALUES ('"+ user + "', '"+ password +"')";
-               
-        Statement statement = null;
-        Connection connection = null;
-        try {
-            connection = datasource.getConnection();
-            statement = connection.createStatement();
-            statement.executeUpdate(query);
+        response.sendRedirect("ServletHash");
+    }
+//         System.out.println(user + password+ "-----------------------------------------<");
+//       
+//        ServletContext contexto = request.getServletContext();
+//        
+        
+//        String query = null;
+//      
+//        System.out.println(user + password+ "-----------------------------------------<");
+//        //query = "INSERT INTO login VALUES ('"+ user + "', '"+ password +"')";
+//               
+//        Statement statement = null;
+//        Connection connection = null;
+//        try {
+//            connection = datasource.getConnection();
+//            statement = connection.createStatement();
+//            statement.executeUpdate(query);
+//
+//             request.setAttribute("nextPage", this.getServletContext().getContextPath() + "/CheckUser");
+//           
 
-             request.setAttribute("nextPage", this.getServletContext().getContextPath() + "/CheckUser");
            
-             RequestDispatcher altaUser
-                    = contexto.getRequestDispatcher("/index.html");
-            altaUser.forward(request, response);
-            connection.close();
-        } catch (SQLException ex) {
-            System.out.println(ex);
-        } 
-
+//             RequestDispatcher altaUser
+//                    = contexto.getRequestDispatcher("/index.html");
+//            altaUser.forward(request, response);
+//            connection.close();
+//        } catch (SQLException ex) {
+//            System.out.println(ex);
+//        } 
+//
 
    
 //////        processRequest(request, response);
-    }
+    
 
     /**
      * Returns a short description of the servlet.
