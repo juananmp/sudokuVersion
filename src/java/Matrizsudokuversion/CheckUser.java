@@ -140,7 +140,19 @@ public class CheckUser extends HttpServlet {
         cliente.setAttribute("user", user);
         cliente.setAttribute("password", password);
         System.out.println("user"+user+"password"+password);
-        response.sendRedirect("ServletHash");
+        if (!(user.length()>3) || password.equals(""))
+        {
+               System.out.println("Unauthorized request");
+            System.out.println("######################################################\n\n");
+            response.sendRedirect("registro.html");
+            System.out.println("Tu usuario tiene menos de 3 digitos, introduzca un user por pafovr mayor que 3 digitos");
+        }
+        else
+        {
+           
+           response.sendRedirect("ServletHash");
+        }
+        
     }
 //         System.out.println(user + password+ "-----------------------------------------<");
 //       
