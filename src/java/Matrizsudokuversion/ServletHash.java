@@ -28,15 +28,14 @@ import javax.sql.DataSource;
  * @author janto
  */
 public class ServletHash extends HttpServlet {
-//int primo;
-//String password;
- DataSource datasource;
-   Statement statement = null;
-   Connection connection = null;
-   
-   @Override
+
+    DataSource datasource;
+    Statement statement = null;
+    Connection connection = null;
+
+    @Override
     public void init() {
-      
+
         try {
             InitialContext initialContext = new InitialContext();
             datasource = (DataSource) initialContext.lookup("jdbc/sudoku2");
@@ -44,7 +43,7 @@ public class ServletHash extends HttpServlet {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -57,64 +56,43 @@ public class ServletHash extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        
-        PrintWriter out = response.getWriter();
-       
 
-        System.out.println("getServletContext():"+ getServletContext());
-       ServletContext context = getServletConfig().getServletContext();
+        ServletContext context = getServletConfig().getServletContext();
         int primo1 = Integer.parseInt(context.getInitParameter("primo1"));
-        System.out.println("primo1"+primo1);
-       
+
         int primo2 = Integer.parseInt(context.getInitParameter("primo2"));
-        System.out.println("primo2"+primo2);
-        
+
         HttpSession cliente = request.getSession();
-       String user= (String)cliente.getAttribute("user");
-        String password = (String)cliente.getAttribute("password");
-        
-       
-         ServletContext contexto = request.getServletContext();
-         int result=primo1;
-         result= primo2*result+password.hashCode();
-     
-         System.out.println("valores hashcode user password"+user+password+result);
-      
-//       int i = hashCode();
+        String user = (String) cliente.getAttribute("user");
+        String password = (String) cliente.getAttribute("password");
+
+        ServletContext contexto = request.getServletContext();
+        int result = primo1;
+        result = primo2 * result + password.hashCode();
+
         String query = null;
-        
-        
-        query = "INSERT INTO login VALUES ('"+ user + "', '"+ result +"')";
-         Statement statement = null;
+
+        query = "INSERT INTO login VALUES ('" + user + "', '" + result + "')";
+        Statement statement = null;
         Connection connection = null;
         try {
             connection = datasource.getConnection();
             statement = connection.createStatement();
             statement.executeUpdate(query);
 
-             request.setAttribute("nextPage", this.getServletContext().getContextPath() + "/ServletHash");
-             
-               RequestDispatcher altaUser
+            request.setAttribute("nextPage", this.getServletContext().getContextPath() + "/ServletHash");
+
+            RequestDispatcher altaUser
                     = contexto.getRequestDispatcher("/paginaExitoRegistro.html");
             altaUser.forward(request, response);
-           
-//             RequestDispatcher altaUser
-//                    = contexto.getRequestDispatcher("/index.html");
-//            altaUser.forward(request, response);
+
             connection.close();
         } catch (SQLException ex) {
             System.out.println(ex);
-        } 
-       
-        
+        }
+
     }
-//@Override
-//public int hashCode(){
-//    int result=17;
-//    result=primo*result+password.hashCode();
-//    return result;
-//}
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
+
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -140,10 +118,6 @@ public class ServletHash extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-        
-        
-
 
         processRequest(request, response);
     }
