@@ -28,7 +28,7 @@ import javax.sql.DataSource;
  * @author janto
  */
 public class ServletHash extends HttpServlet {
-int primo;
+//int primo;
 //String password;
  DataSource datasource;
    Statement statement = null;
@@ -61,23 +61,27 @@ int primo;
         PrintWriter out = response.getWriter();
        
 
-//        System.out.println("getServletContext():"+ getServletContext());
-//       ServletContext context = getServletConfig().getServletContext();
-//        int primo = Integer.parseInt(context.getInitParameter("primo"));
-//        System.out.println("primo"+primo);
+        System.out.println("getServletContext():"+ getServletContext());
+       ServletContext context = getServletConfig().getServletContext();
+        int primo = Integer.parseInt(context.getInitParameter("primo"));
+        System.out.println("primo"+primo);
+        
         HttpSession cliente = request.getSession();
        String user= (String)cliente.getAttribute("user");
         String password = (String)cliente.getAttribute("password");
         
        
-        System.out.println("valores hashcode user password"+user+password);
          ServletContext contexto = request.getServletContext();
-//       
+         int result=17;
+         result= primo*result+password.hashCode();
+     
+         System.out.println("valores hashcode user password"+user+password+result);
+      
 //       int i = hashCode();
         String query = null;
 //      
 //        System.out.println(user + password+ i+"-----------------------------------------<");
-        query = "INSERT INTO login VALUES ('"+ user + "', '"+ password +"')";
+        query = "INSERT INTO login VALUES ('"+ user + "', '"+ result +"')";
          Statement statement = null;
         Connection connection = null;
         try {
