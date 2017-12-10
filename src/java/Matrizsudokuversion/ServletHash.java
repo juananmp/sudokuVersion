@@ -82,8 +82,8 @@ public class ServletHash extends HttpServlet {
       
 //       int i = hashCode();
         String query = null;
-//      
-//        System.out.println(user + password+ i+"-----------------------------------------<");
+        
+        
         query = "INSERT INTO login VALUES ('"+ user + "', '"+ result +"')";
          Statement statement = null;
         Connection connection = null;
@@ -95,7 +95,7 @@ public class ServletHash extends HttpServlet {
              request.setAttribute("nextPage", this.getServletContext().getContextPath() + "/ServletHash");
              
                RequestDispatcher altaUser
-                    = contexto.getRequestDispatcher("/index.html");
+                    = contexto.getRequestDispatcher("/paginaExitoRegistro.html");
             altaUser.forward(request, response);
            
 //             RequestDispatcher altaUser
