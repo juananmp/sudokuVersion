@@ -53,10 +53,6 @@
         </init-param>
     </servlet>
     <servlet>
-        <servlet-name>ComprobarInsercion</servlet-name>
-        <servlet-class>Matrizsudokuversion.ComprobarInsercion</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
@@ -84,10 +80,6 @@
     <servlet-mapping>
         <servlet-name>Matriz</servlet-name>
         <url-pattern>/Matriz</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>ComprobarInsercion</servlet-name>
-        <url-pattern>/ComprobarInsercion</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>Faces Servlet</servlet-name>
