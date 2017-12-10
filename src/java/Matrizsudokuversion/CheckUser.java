@@ -39,13 +39,13 @@ public class CheckUser extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-     DataSource datasource;
-   Statement statement = null;
-   Connection connection = null;
-   
-   @Override
+    DataSource datasource;
+    Statement statement = null;
+    Connection connection = null;
+
+    @Override
     public void init() {
-      
+
         try {
             InitialContext initialContext = new InitialContext();
             datasource = (DataSource) initialContext.lookup("jdbc/sudoku2");
@@ -53,24 +53,7 @@ public class CheckUser extends HttpServlet {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-//    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-//            throws ServletException, IOException {
-//        response.setContentType("text/html;charset=UTF-8");
-//        try (PrintWriter out = response.getWriter()) {
-//            /* TODO output your page here. You may use following sample code. */
-//            out.println("<!DOCTYPE html>");
-//            out.println("<html>");
-//            out.println("<head>");
-//            out.println("<title>Servlet CheckUser</title>");            
-//            out.println("</head>");
-//            out.println("<body>");
-//            out.println("<h1>Servlet CheckUser at " + request.getContextPath() + "</h1>");
-//            out.println("</body>");
-//            out.println("</html>");
-//        }
-//    }
 
-    // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -82,44 +65,40 @@ public class CheckUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-            
-        ServletContext contexto = request.getServletContext();
-          HttpSession cliente = request.getSession();
-        String user = (String)cliente.getAttribute("user");
-        
-       
-         System.out.println(user+ "primer paso<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-          try {
-            
-          String query=null;
-              System.out.println(user+"segundo paso<<<<<<<<<<<<<<<<<");
-           query = "SELECT * FROM login WHERE user like '"+user+"'";
-              System.out.println(user+ "tercer paso<<<<<<<<<<<<<<<<<");
-           ResultSet resulSet = null;
-           connection = datasource.getConnection();
-           statement = connection.createStatement();
-           resulSet = statement.executeQuery(query);
-          
-           //con el while si el user y passwd estan en la bbdd lo ejecuta
-           while(resulSet.next()){
-                //out.println(user);;
-               // System.out.println("llegue");
-               //response.sendRedirect("/sudokuVersion/"); 
-                 RequestDispatcher paginaError
-                    = contexto.getRequestDispatcher("/errorPassword.html");
 
-            paginaError.forward(request, response);
-           } 
-          RequestDispatcher paginaError
+        ServletContext contexto = request.getServletContext();
+        HttpSession cliente = request.getSession();
+        String user = (String) cliente.getAttribute("user");
+
+        try {
+
+            String query = null;
+            System.out.println(user + "segundo paso<<<<<<<<<<<<<<<<<");
+            query = "SELECT * FROM login WHERE user like '" + user + "'";
+            System.out.println(user + "tercer paso<<<<<<<<<<<<<<<<<");
+            ResultSet resulSet = null;
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            resulSet = statement.executeQuery(query);
+
+            //con el while si el user y passwd estan en la bbdd lo ejecuta
+            while (resulSet.next()) {
+
+                RequestDispatcher paginaError
+                        = contexto.getRequestDispatcher("/errorPassword.html");
+
+                paginaError.forward(request, response);
+            }
+            RequestDispatcher paginaError
                     = contexto.getRequestDispatcher("/errorUser.html");
 
             paginaError.forward(request, response);
-          
-       } catch (SQLException ex) {
-             System.out.println(ex);
-          
-       }
-//       processRequest(request, response);
+
+        } catch (SQLException ex) {
+            System.out.println(ex);
+
+        }
+
     }
 
     /**
@@ -133,91 +112,45 @@ public class CheckUser extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-       
+
         String user = request.getParameter("user");
         String password = request.getParameter("password");
         HttpSession cliente = request.getSession();
         cliente.setAttribute("user", user);
         cliente.setAttribute("password", password);
-        System.out.println("user"+user+"password"+password);
-        
-         ServletContext contexto = request.getServletContext();   
-       
-         System.out.println(user+ password+ "primer paso<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<");
-          try {
-            
-          String query=null;
-              System.out.println(user+"segundo paso<<<<<<<<<<<<<<<<<");
-           query = "SELECT * FROM login WHERE user like '"+user+"'";
-              System.out.println(user+ "tercer paso<<<<<<<<<<<<<<<<<");
-           ResultSet resulSet = null;
-           connection = datasource.getConnection();
-           statement = connection.createStatement();
-           resulSet = statement.executeQuery(query);
-          
-           //con el while si el user 
-           while(resulSet.next()){
-               
-               RequestDispatcher paginaError
-                    = contexto.getRequestDispatcher("/esteUsuarioYaExiste.html");
+        System.out.println("user" + user + "password" + password);
 
-            paginaError.forward(request, response);
-           } 
-         if (!(user.length()>3) || password.equals(""))
-        {
-           
-             System.out.println("Unauthorized request");
-            System.out.println("######################################################\n\n");
-            response.sendRedirect("registroIncorrecto.html");
-            System.out.println("Tu usuario tiene menos de 3 digitos, introduzca un user por pafovr mayor que 3 digitos");
+        ServletContext contexto = request.getServletContext();
+
+        try {
+
+            String query = null;
+            query = "SELECT * FROM login WHERE user like '" + user + "'";
+            ResultSet resulSet = null;
+            connection = datasource.getConnection();
+            statement = connection.createStatement();
+            resulSet = statement.executeQuery(query);
+
+            //con el while si el user 
+            while (resulSet.next()) {
+
+                RequestDispatcher paginaError
+                        = contexto.getRequestDispatcher("/esteUsuarioYaExiste.html");
+
+                paginaError.forward(request, response);
+            }
+            if (!(user.length() > 3) || password.equals("")) {
+                response.sendRedirect("registroIncorrecto.html");
+            } else {
+
+                response.sendRedirect("ServletHash");
+            }
+
+        } catch (SQLException ex) {
+            System.out.println(ex);
         }
-        else
-        {
-           
-           response.sendRedirect("ServletHash");
-        }
-        
-          
-       } catch (SQLException ex) {
-             System.out.println(ex);
-          
-       }
-        
-       
+
     }
-//         System.out.println(user + password+ "-----------------------------------------<");
-//       
-//        ServletContext contexto = request.getServletContext();
-//        
-        
-//        String query = null;
-//      
-//        System.out.println(user + password+ "-----------------------------------------<");
-//        //query = "INSERT INTO login VALUES ('"+ user + "', '"+ password +"')";
-//               
-//        Statement statement = null;
-//        Connection connection = null;
-//        try {
-//            connection = datasource.getConnection();
-//            statement = connection.createStatement();
-//            statement.executeUpdate(query);
-//
-//             request.setAttribute("nextPage", this.getServletContext().getContextPath() + "/CheckUser");
-//           
-
-           
-//             RequestDispatcher altaUser
-//                    = contexto.getRequestDispatcher("/index.html");
-//            altaUser.forward(request, response);
-//            connection.close();
-//        } catch (SQLException ex) {
-//            System.out.println(ex);
-//        } 
-//
-
-   
-//////        processRequest(request, response);
-    
 
     /**
      * Returns a short description of the servlet.
