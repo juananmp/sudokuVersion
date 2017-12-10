@@ -20,6 +20,14 @@
         <filter-name>FiltroReintentos</filter-name>
         <filter-class>Matrizsudokuversion.FiltroReintentos</filter-class>
     </filter>
+    <filter>
+        <filter-name>FiltroUsuarioConectado</filter-name>
+        <filter-class>Matrizsudokuversion.FiltroUsuarioConectado</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>FiltroUsuarioConectado</filter-name>
+        <servlet-name>Matriz</servlet-name>
+    </filter-mapping>
     <filter-mapping>
         <filter-name>FiltroLongUser</filter-name>
         <servlet-name>CheckUserPassword</servlet-name>
