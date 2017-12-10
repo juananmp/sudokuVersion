@@ -108,7 +108,7 @@ public class FiltroReintentos implements Filter {
         
       hitCount++;
        System.out.println(hitCount+"fuera del if<<<<<<<<<<<<<<<<<<<<<<<<<<");
-        if ((hitCount>3))
+        if ((hitCount>5))
             
         {
             System.out.println(hitCount);
