@@ -136,6 +136,10 @@ public class CheckUser extends HttpServlet {
        
         String user = request.getParameter("user");
         String password = request.getParameter("password");
+        HttpSession cliente = request.getSession();
+        cliente.setAttribute("user", user);
+        cliente.setAttribute("password", password);
+        System.out.println("user"+user+"password"+password);
         response.sendRedirect("ServletHash");
     }
 //         System.out.println(user + password+ "-----------------------------------------<");
