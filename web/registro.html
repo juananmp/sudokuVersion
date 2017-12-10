@@ -7,27 +7,21 @@ and open the template in the editor.
 <html>
     <head>
         <title>TODO supply a title</title>
-         <link rel="stylesheet" type="text/css" href="resources/css/w3.css">
-       
+        <link rel="stylesheet" type="text/css" href="resources/css/w3.css">
+
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
     </head>
     <body>
-         <div class="loginbox">
-                <img src="iconoLogin.png" class="avatar">
-                 <h1>Registrese Aqui</h1>
-         <form method="post" action="/sudokuVersion/CheckUser" >
-           <p> Username/ Usuario</p>  <input type="text" name="user" placeholder="Al menos cuatro letras">
+        <div class="loginbox">
+            <img src="resources/imagenes/iconoLogin.png" class="avatar">
+            <h1>Registrese Aqui</h1>
+            <form method="post" action="/sudokuVersion/CheckUser" >
+                <p> Username/ Usuario</p>  <input type="text" name="user" placeholder="Al menos cuatro letras">
+                <p> Password/Contrasenna</p>  <input type="password" name="password" placeholder="Password Obligatoria">   
+                <input type="submit" value="Registrar" name="login">
 
-           <p> Password/Contrasenna</p>  <input type="password" name="password" placeholder="Password Obligatoria">   
-
-
-
-            <input type="submit" value="Registrar" name="login">
-            
-          
-        </form>
-
-            </div>
+            </form>
+        </div>
     </body>
 </html>
