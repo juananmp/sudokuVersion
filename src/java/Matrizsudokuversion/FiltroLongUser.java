@@ -110,7 +110,7 @@ public class FiltroLongUser implements Filter {
         {
                System.out.println("Unauthorized request");
             System.out.println("######################################################\n\n");
-            res.sendRedirect("index.html");
+            res.sendRedirect("loginUserMenosLetras.html");
             out.println("Tu usuario tiene menos de 3 digitos, introduzca un user por pafovr mayor que 3 digitos");
         }
         else
