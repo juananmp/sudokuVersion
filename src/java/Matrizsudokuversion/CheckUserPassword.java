@@ -46,23 +46,6 @@ public class CheckUserPassword extends HttpServlet {
         }
     }
 
-    protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet CheckUserPassword</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet CheckUserPassword at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
-        }
-    }
-
     /**
      * Handles the HTTP <code>GET</code> method.
      *
@@ -74,7 +57,7 @@ public class CheckUserPassword extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+
     }
 
     /**
@@ -92,6 +75,13 @@ public class CheckUserPassword extends HttpServlet {
         String user = request.getParameter("user");
         String password = request.getParameter("password");
 
+        //si en el login se pudiera elegir el numero de sudoku (o la dificultad), aqui recogeriamos el valor con un getParameter
+        int numSudoku = 1;
+
+        //creo sesion y guardo los datos user, password y numSudoku para su uso en los servlets posteriores
+        HttpSession cliente = request.getSession();
+        cliente.setAttribute("user", user);
+        cliente.setAttribute("numSudoku", numSudoku);
         ServletContext context = getServletConfig().getServletContext();
         int primo2 = Integer.parseInt(context.getInitParameter("primo2"));
 
@@ -113,8 +103,6 @@ public class CheckUserPassword extends HttpServlet {
             //con el while si el user y passwd estan en la bbdd lo ejecuta
             if (resulSet.next()) {
                 //crearse sesion de cliente y guardar en la sesion el atributo user
-                HttpSession cliente = request.getSession();
-                cliente.setAttribute("user", user);
 
                 RequestDispatcher paginaError
                         = contexto.getRequestDispatcher("/./faces/templateWelcome.xhtml");
@@ -122,8 +110,6 @@ public class CheckUserPassword extends HttpServlet {
                 paginaError.forward(request, response);
 
             } else {
-                HttpSession cliente = request.getSession();
-                cliente.setAttribute("user", user);
 
                 response.sendRedirect("CheckUser");
 
@@ -132,7 +118,7 @@ public class CheckUserPassword extends HttpServlet {
             System.out.println(ex);
 
         }
-        processRequest(request, response);
+
     }
 
     /**
