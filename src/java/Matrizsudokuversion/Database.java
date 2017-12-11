@@ -26,6 +26,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
 /**
@@ -45,7 +46,8 @@ public class Database extends HttpServlet {
 
             datasource = (DataSource) initialContext.lookup("jdbc/sudoku2");
         } catch (NamingException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+            //  Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
 
     }
@@ -169,7 +171,7 @@ public class Database extends HttpServlet {
             connection.close();
 
         } catch (SQLException ex) {
-            System.out.println("No existe el usuario");
+            System.out.println(ex);
 
         }
         return i;
@@ -210,7 +212,7 @@ public class Database extends HttpServlet {
             return i;
 
         } catch (SQLException ex) {
-            System.out.println("No existe el usuario");
+            System.out.println(ex);
 
         }
         return i;
@@ -220,6 +222,7 @@ public class Database extends HttpServlet {
     @Override
     public void destroy() {
         try {
+
             statement.close();
         } catch (SQLException ex) {
             Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
