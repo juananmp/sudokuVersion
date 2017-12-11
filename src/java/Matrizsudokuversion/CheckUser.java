@@ -73,9 +73,7 @@ public class CheckUser extends HttpServlet {
         try {
 
             String query = null;
-            System.out.println(user + "segundo paso<<<<<<<<<<<<<<<<<");
             query = "SELECT * FROM login WHERE user like '" + user + "'";
-            System.out.println(user + "tercer paso<<<<<<<<<<<<<<<<<");
             ResultSet resulSet = null;
             connection = datasource.getConnection();
             statement = connection.createStatement();
@@ -115,10 +113,10 @@ public class CheckUser extends HttpServlet {
 
         String user = request.getParameter("user");
         String password = request.getParameter("password");
+
         HttpSession cliente = request.getSession();
         cliente.setAttribute("user", user);
         cliente.setAttribute("password", password);
-        System.out.println("user" + user + "password" + password);
 
         ServletContext contexto = request.getServletContext();
 
