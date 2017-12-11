@@ -40,7 +40,6 @@ public class FiltroReintentos implements Filter {
             FilterChain chain)
             throws IOException, ServletException {
 
-        PrintWriter out = response.getWriter();
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
 
