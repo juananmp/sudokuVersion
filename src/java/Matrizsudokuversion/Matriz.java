@@ -45,13 +45,16 @@ public class Matriz extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
-        Database db = new Database();
-
-        int[][] matriz = db.plantilla("Inicial");
-        int[][] solucion = db.plantilla("Final");
-
         HttpSession cliente = request.getSession();
         String user = (String) cliente.getAttribute("user");
+//        int numSudoku = (Integer) cliente.getAttribute("numSudoku");
+        int numSudoku = Integer.parseInt(request.getParameter("numSudoku"));
+        Database db = new Database();
+
+        int[][] matriz = db.plantilla("Inicial", numSudoku);
+        int[][] solucion = db.plantilla("Final", numSudoku);
+
+       
         //comprobar dice si se ha pulsado ya el boton comprobar
         String comprobar = request.getParameter("comprobar"); //Saber si nos piden comprobar, esto siempre escucha y siempre va a ser null hasta que pulse el botón de comprobar 
 
@@ -74,7 +77,7 @@ public class Matriz extends HttpServlet {
 //                
 //                //si hay cookie recupera los datos de la tabla intermedia y se los mete en numeroYposcion que es la que siempre dibujo
 //               if (identificador.equals(user) && valor.equals("sudoku")) { //quitar
-                    numeroYposicion = db.plantillaIntermedia(user);
+                    numeroYposicion = db.plantillaIntermedia(user, numSudoku);
 
                     cliente.setAttribute("numeroYposicion", numeroYposicion); //aqui se subscribe
 //                }
@@ -165,7 +168,7 @@ public class Matriz extends HttpServlet {
 //            ck.setMaxAge(60 * 60 * 24 * 7);
 //            response.addCookie(ck);
 
-            db.guardar(user, numeroYposicion);
+            db.guardar(user, numeroYposicion, numSudoku);
             //out.println("<div class=\"comprobar\">");
             out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"datos\"><input type=\"hidden\" name=\"comprobar\" value=\"algo\"><button>Comprobar</button></form>");
             out.println("</div>");
