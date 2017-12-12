@@ -128,7 +128,7 @@ public class CheckUser extends HttpServlet {
             connection = datasource.getConnection();
             statement = connection.createStatement();
             resulSet = statement.executeQuery(query);
-
+            
             //con el while si el user 
             while (resulSet.next()) {
 
