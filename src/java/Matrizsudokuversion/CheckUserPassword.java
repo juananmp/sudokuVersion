@@ -102,12 +102,17 @@ public class CheckUserPassword extends HttpServlet {
 
             //con el while si el user y passwd estan en la bbdd lo ejecuta
             if (resulSet.next()) {
-                //crearse sesion de cliente y guardar en la sesion el atributo user
+                String recordar = request.getParameter("recordar");
+                if(recordar!= null){
+                 Cookie ck = new Cookie(user, password);
+                 ck.setMaxAge(60 * 60 * 24 * 7);
+                 response.addCookie(ck);
+                }
+                
+                RequestDispatcher facelet
+                        = contexto.getRequestDispatcher("/./faces/faceletInicio.xhtml");
 
-                RequestDispatcher paginaError
-                        = contexto.getRequestDispatcher("/./faces/templateWelcome.xhtml");
-
-                paginaError.forward(request, response);
+                facelet.forward(request, response);
 
             } else {
 
