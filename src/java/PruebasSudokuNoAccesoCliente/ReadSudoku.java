@@ -26,7 +26,7 @@ public class ReadSudoku {
     private int j = 1;
 
     public void readData() {
-        try (Scanner input = new Scanner(new File("src/java/Matriz/inicialsudoku1.txt"))) {
+        try (Scanner input = new Scanner(new File("src/java/Matrizsudokuversion/inicialsudoku1.txt"))) {
 
             String line;
             line = input.nextLine();
@@ -48,6 +48,7 @@ public class ReadSudoku {
                 }
 
             }
+            // saveData(); 
 
         } catch (IOException e) {
 
