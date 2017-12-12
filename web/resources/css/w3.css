@@ -292,9 +292,10 @@ body{
 /*    como las letras del h1 nos quedan superpuestas al icono*/
     padding: 40px 75px;
 }
-.loginbox2{
-    width: 1000px;
-    height: 700px;
+
+.loginbox{
+    width: 320px;
+    height: 420px;
     background: #000;
     color: #fff;
     top: 50%;
@@ -306,6 +307,19 @@ body{
     padding: 40px 75px;
 }
 
+.loginbox5{
+     width: 320px;
+    height: 420px;
+    background: #000;
+    color: #fff;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+/*    como las letras del h1 nos quedan superpuestas al icono*/
+    padding: 40px 75px;
+}
 .loginbox3{
     width: 600px;
     height: 500px;
@@ -422,12 +436,43 @@ h4{
     font-weight: bold;
        
 }
+
+
+.loginbox5 p{
+    color: #adb7bd;
+    font-size: 18px;
+    margin: 0;
+    margin-top: 10px;
+    padding: 0;
+    font-weight: bold;
+       
+}
+.loginbox5 p{
+    color: #adb7bd;
+    font-size: 18px;
+    margin: 0;
+    margin-top: 10px;
+    padding: 0;
+    font-weight: bold;
+       
+}
 /*separación username y password y entre boton */
-.loginbox input{
+.loginbox5 input{
 /*    distancia entre ellos*/
-    width: 150px;
+    width: 100px;
 /*    distancia boton a password*/
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+}
+
+.loginbox5 input[type="recordar"]{
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: transparent;
+    outline: none;
+    height: 10px;
+    color: #fff;
+    font-size: 14px;
+    margin-left: 100px;
 }
 
 .loginbox input[type ="text"], input[type="password"] {
@@ -439,10 +484,30 @@ h4{
     color: #fff;
     font-size: 14px;
         
+}.loginbox input[type ="text"], input[type="password"] {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: transparent;
+    outline: none;
+    height: 35px;
+    color: #fff;
+    font-size: 14px;
+        
+}
+
+.loginbox5 input[type ="text"], input[type="password"] {
+    border: none;
+    border-bottom: 1px solid #fff;
+    background: transparent;
+    outline: none;
+    height: 35px;
+    color: #fff;
+    font-size: 14px;
+        
 }
 
 
-.loginbox input[type="submit"]{
+.loginbox5 input[type="submit"]{
     border: none;
     outline: none;
     background: darkorange;
@@ -483,6 +548,13 @@ h4{
     line-height: 20px;
     color: darkgrey;
 }
+.loginbox5 a{
+   
+    text-decoration: none;
+    font-size: 20px;
+    line-height: 20px;
+    color: darkgrey;
+}
 
 .loginbox a:hover{
     
@@ -500,3 +572,86 @@ h4{
     
     color: #ffc107;
 }
+.loginbox5 a:hover{
+    
+    color: #ffc107;
+}
+
+/*.comprobar{
+   
+    background: #795548;
+    color: #00ffff;
+    top: 40%;
+    left: 75%;
+    position: fixed;
+    transform: translate(-48%,-52%);
+    box-sizing: border-box;
+    como las letras del h1 nos quedan superpuestas al icono
+    padding: 33px 30px;
+}
+
+.comprobar button{
+    border: none;
+    outline: none;
+    background:  burlywood;
+    height: 50px;
+    color: #fff;
+    font-size: 40px;
+    border-radius: 20px;
+
+}
+.comprobar button:hover
+{
+    cursor: pointer;
+    background: #ffffff;
+    color: #00ffff;
+}*/
+
+.almacenarclass {
+    background: #795548;
+    color: #00ffff;
+    top: 40%;
+    left: 75%;
+    position: fixed;
+    transform: translate(-50%,-50%);
+    box-sizing: border-box;
+/*    como las letras del h1 nos quedan superpuestas al icono*/
+    padding: 33px 30px;
+    border-radius: 30px;
+}
+
+.almacenarclass button{
+     border: none;
+    outline: none;
+    margin-left: 80px;
+    background: burlywood;
+    margin-bottom: 10px;
+    height: 50px;
+    color: #fff;
+    font-size: 40px;
+    border-radius: 20px;
+}
+.almacenarclass button:hover
+{
+    cursor: pointer;
+    background: #ffffff;
+    color: #00ffff;
+}
+h6{
+     margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    font-size: 50px;
+    color: #ffffff;
+}
+
+h7{
+    
+     margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    font-size: 10px;
+    color: #ffffff;
+}
+
+
