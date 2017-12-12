@@ -52,29 +52,34 @@ public class Matriz extends HttpServlet {
 
         HttpSession cliente = request.getSession();
         String user = (String) cliente.getAttribute("user");
+        //comprobar dice si se ha pulsado ya el boton comprobar
         String comprobar = request.getParameter("comprobar"); //Saber si nos piden comprobar, esto siempre escucha y siempre va a ser null hasta que pulse el botón de comprobar 
 
         //parametro de inicilizacion y ServletConfig tiene un metodo llamado getinitparameter
         ServletConfig sc = this.getServletConfig();
         String saludo = sc.getInitParameter("saludo");
 
-        //cockie
+        //Si estamos entrando por primera vez mira a ver si tiene un cockie para ese usuario
         if (comprobar == null) {
             int[][] numeroYposicion = new int[9][9];
-            Cookie[] cks = request.getCookies();
+//            Cookie[] cks = request.getCookies();
 
-            for (int i = 0; i < cks.length; i++) {
-                Cookie ckActual = cks[i];
-                System.out.println(i);
-                String identificador = ckActual.getName();
-                String valor = ckActual.getValue();
-                if (identificador.equals(user) && valor.equals("sudoku")) {
+            //quitar
+//            for (int i = 0; i < cks.length; i++) {
+//                //select de intermedia where el usuario igual
+//                Cookie ckActual = cks[i];
+//                System.out.println(i);
+//                String identificador = ckActual.getName();
+//                String valor = ckActual.getValue();
+//                
+//                //si hay cookie recupera los datos de la tabla intermedia y se los mete en numeroYposcion que es la que siempre dibujo
+//               if (identificador.equals(user) && valor.equals("sudoku")) { //quitar
                     numeroYposicion = db.plantillaIntermedia(user);
 
                     cliente.setAttribute("numeroYposicion", numeroYposicion); //aqui se subscribe
-                }
-
-            }
+//                }
+//
+//            }
         }
 
         //la primera vez que entre el valor de numeroYposicion va a ser nulo
@@ -149,17 +154,21 @@ public class Matriz extends HttpServlet {
                 out.println("</tr>");
             }
             out.println("</table>");
+             out.println("<div class=\"almacenarclass\">");
+             out.println("<h6>Panel De Control</h6>");
             out.println("<button>Almacenar</button>");
+            //out.println("</div>");
             out.println("</form>");
 
             int[][] numeroYposicion = (int[][]) cliente.getAttribute("numeroYposicion");
-            Cookie ck = new Cookie(user, "sudoku");
-            ck.setMaxAge(60 * 60 * 24 * 7);
-            response.addCookie(ck);
+//            Cookie ck = new Cookie(user, "sudoku");
+//            ck.setMaxAge(60 * 60 * 24 * 7);
+//            response.addCookie(ck);
 
             db.guardar(user, numeroYposicion);
-
+            //out.println("<div class=\"comprobar\">");
             out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"datos\"><input type=\"hidden\" name=\"comprobar\" value=\"algo\"><button>Comprobar</button></form>");
+            out.println("</div>");
             //cliente.invalidate();
             ServletContext ctx = getServletContext();
             int totalUsers = (Integer) ctx.getAttribute("totalusers");
