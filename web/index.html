@@ -16,17 +16,36 @@ and open the template in the editor.
     </head>
 
     <body>
-        <div class="loginbox">
+        <div class="loginbox5">
             <img src="resources/imagenes/iconoLogin.png" class="avatar">
             <h1>Login Here</h1>
-            <form method="post" action="/sudokuVersion/CheckUserPassword" >
+            <form method="post" action="/sudokuVersion/CheckUserPassword" name="formulario">
 
-                <p> Username/ Usuario</p>  <input type="text" name="user" placeholder="Al menos cuatro letras">
+                <p> Username/ Usuario</p>  <input type="text" name="user" placeholder="Al menos cuatro letras" onblur="leer()">
 
                 <p> Password/Contrasenna</p>  <input type="password" name="password" placeholder="Password Obligatoria">   
 
-                <input type="submit" value="Comenzar" name="login">
-                <a href="registro.html"> Regritrarse Aqui </a><br>
+                <script language="javascript">
+                    
+                    function leer(){
+                        var nombre = document.formulario.user.value;
+                        var lista = document.cookie.split(";");
+                        for(i in lista){
+                            var busca = lista[i].search(nombre);
+                            if (busca>-1){
+                                micookie = lista[i];
+                            }
+                        }
+                        var igual = micookie.indexOf("=");
+                        var valor = micookie.substring(igual+1);
+                        document.formulario.password.value = valor;
+                    }
+                   
+                    
+                </script>
+                <input name="recordar" value="recordar" type="checkbox"> Recordar 
+                <input type="submit" value="Comenzar" name="login" onclick="guardar(document.formulario.user.value, document.formulario.password.value)"> 
+                <a href="registro.html"> Regristrarse Aqui </a><br>
 
             </form>
 
