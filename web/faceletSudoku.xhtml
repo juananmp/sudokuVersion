@@ -3,6 +3,7 @@
 To change this license header, choose License Headers in Project Properties.
 To change this template file, choose Tools | Templates
 and open the template in the editor.
+<image src="resources/imagenes/sudokuIconoFacelet.jpg" class="avatar5"></image>
 -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml"
@@ -14,16 +15,23 @@ and open the template in the editor.
 
             <ui:define name="content">
                 <div class="loginbox">
+                    
                     <h1>Sudoku</h1>
-
-                    <script> 
-                        function abrir(url) { 
-                        open(url,'','top=3000,left=300,width=1400,height=950') ; 
-                         } 
-                    </script>
-                    <li><a href="javascript:abrir('/sudokuVersion/Matriz')">Pulse Aqui Para Jugar</a></li>
-                    <image src="resources/imagenes/sudokuIconoFacelet.jpg" class="avatar5"></image>
-                </div>
+                    <h2>Elija EL Modo De Dificultad</h2>
+                 
+                    <form action="Matriz" target="Sudoku" onsubmit="window.open('', 'Sudoku', 'width=1800, height=1000')">
+                    <select name="numSudoku">
+                        <option value="1">Facil</option>
+                         <option value="2">Medio</option>
+                          <option value="3">Dificil</option>
+                       
+                    </select>
+                         
+                        <input type="submit" values="ok"></input>
+                   </form>
+                    
+                
+                 </div>
 
             </ui:define>
 
