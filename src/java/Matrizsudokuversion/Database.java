@@ -79,7 +79,7 @@ public class Database extends HttpServlet {
 
     }
 
-    public void guardar(String user, int[][] intermedia) {
+    public void guardar(String user, int[][] intermedia, int numSudoku) {
         init();
 
         int i = 0;
@@ -87,8 +87,7 @@ public class Database extends HttpServlet {
         int fila;
         int col;
         int valor;
-        int numSudoku = 1;
-        borrar(user);
+        borrar(user, numSudoku);
         while (i <= 8) {
             j = 0;
             while (j <= 8) {
@@ -120,12 +119,12 @@ public class Database extends HttpServlet {
 
     }
 
-    public void borrar(String user) {
+    public void borrar(String user, int numSudoku) {
         init();
 
         String query = null;
         query = "DELETE FROM intermedia WHERE user = '"
-                + user + "'";
+                + user + "' AND NumSudoku = " + numSudoku;
 
         Statement statement = null;
         Connection connection = null;
@@ -140,13 +139,14 @@ public class Database extends HttpServlet {
 
     }
 
-    public int[][] plantillaIntermedia(String user) {
+    public int[][] plantillaIntermedia(String user, int numSudoku) {
         init();
         int[][] i = new int[9][9];
         try {
             String query = null;
             query = "SELECT * FROM intermedia WHERE user = '"
-                    + user + "'";
+                    + user + "' AND NumSudoku = " + numSudoku;
+            System.out.println(query);            
             ResultSet resulSet = null;
             connection = datasource.getConnection();
             statement = connection.createStatement();
@@ -179,12 +179,13 @@ public class Database extends HttpServlet {
     }
 
     //cuando el usuario pide una plantilla de sudoku le redireccionamos a ella
-    public int[][] plantilla(String plantilla) {
+    public int[][] plantilla(String plantilla, int numSudoku) {
         init();
         int[][] i = new int[9][9];
         try {
             String query = null;
-            query = "SELECT * FROM " + plantilla;
+            query = "SELECT * FROM " + plantilla + " where NumSudoku = " + numSudoku;
+            System.out.println(query);
             ResultSet resulSet = null;
             connection = datasource.getConnection();
             statement = connection.createStatement();
