@@ -48,7 +48,17 @@ public class Matriz extends HttpServlet {
         HttpSession cliente = request.getSession();
         String user = (String) cliente.getAttribute("user");
 //        int numSudoku = (Integer) cliente.getAttribute("numSudoku");
-        int numSudoku = Integer.parseInt(request.getParameter("numSudoku"));
+        
+        
+        String stringNumSudoku = request.getParameter("numSudoku");
+        int numSudoku;
+        //Si es distinto de 0 que lo suba a la sesion, si es la primera vez numSudoku es distinto de 0 y lo subo a la sesion
+        if(stringNumSudoku != null){
+           numSudoku = Integer.parseInt(request.getParameter("numSudoku"));
+            cliente.setAttribute("numSudoku", numSudoku);
+        }else{
+            numSudoku = (Integer)cliente.getAttribute("numSudoku");
+        }
         Database db = new Database();
 
         int[][] matriz = db.plantilla("Inicial", numSudoku);
