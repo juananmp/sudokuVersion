@@ -17,8 +17,8 @@ import java.util.logging.Logger;
  * @author janto
  */
 public class ReadSudoku {
-
-    private int numSoduku = 1;
+    //numSudoku puede valer 1,2 o 3
+    private int numSoduku = 3;
     private int fila;
     private int col;
     private int valor;
@@ -26,7 +26,7 @@ public class ReadSudoku {
     private int j = 1;
 
     public void readData() {
-        try (Scanner input = new Scanner(new File("src/java/Matrizsudokuversion/inicialsudoku1.txt"))) {
+        try (Scanner input = new Scanner(new File("src/java/FicherosTxtSudokus/inicialsudoku3.txt"))) {
 
             String line;
             line = input.nextLine();
@@ -48,7 +48,7 @@ public class ReadSudoku {
                 }
 
             }
-            // saveData(); 
+             saveData(); 
 
         } catch (IOException e) {
 
