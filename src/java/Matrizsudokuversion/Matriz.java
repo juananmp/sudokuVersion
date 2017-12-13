@@ -49,13 +49,19 @@ public class Matriz extends HttpServlet {
         String user = (String) cliente.getAttribute("user");
 //        int numSudoku = (Integer) cliente.getAttribute("numSudoku");
         
-        
+//         boolean acabado = false;
+       
+        //comprobar dice si se ha pulsado ya el boton comprobar
+        String comprobar = request.getParameter("comprobar"); //Saber si nos piden comprobar, esto siempre escucha y siempre va a ser null hasta que pulse el botón de comprobar 
+
         String stringNumSudoku = request.getParameter("numSudoku");
         int numSudoku;
         //Si es distinto de 0 que lo suba a la sesion, si es la primera vez numSudoku es distinto de 0 y lo subo a la sesion
         if(stringNumSudoku != null){
            numSudoku = Integer.parseInt(request.getParameter("numSudoku"));
             cliente.setAttribute("numSudoku", numSudoku);
+            //Si no le doy a comprobar no he podido acabar el sudoku
+           
         }else{
             numSudoku = (Integer)cliente.getAttribute("numSudoku");
         }
@@ -63,11 +69,7 @@ public class Matriz extends HttpServlet {
 
         int[][] matriz = db.plantilla("Inicial", numSudoku);
         int[][] solucion = db.plantilla("Final", numSudoku);
-
        
-        //comprobar dice si se ha pulsado ya el boton comprobar
-        String comprobar = request.getParameter("comprobar"); //Saber si nos piden comprobar, esto siempre escucha y siempre va a ser null hasta que pulse el botón de comprobar 
-
         //parametro de inicilizacion y ServletConfig tiene un metodo llamado getinitparameter
         ServletConfig sc = this.getServletConfig();
         String saludo = sc.getInitParameter("saludo");
@@ -134,7 +136,16 @@ public class Matriz extends HttpServlet {
             out.println(" <form method=\"post\" action=\"/sudokuVersion/Matriz\"><table id=\"grid\">");
             //cogemos otra vez la matriz, volvemos a coger la casa, puede ser nueva o ya con datos
             int[][] contenido = (int[][]) cliente.getAttribute("numeroYposicion");
-            //estos 2 bucles nos sirven para insertar los inputs, las cajas de texto
+//           if(comprobar==null){
+
+//                acabado = false;
+//                cliente.setAttribute("acabado", acabado);
+//            }else{
+//                acabado = true;
+//                cliente.setAttribute("acabado", acabado);
+//            }
+            
+              //estos 2 bucles nos sirven para insertar los inputs, las cajas de texto
             //volvemos a recorrer por piso y las habitaciones
             for (int i = 0; i < matriz.length; i++) {//matriz es matriz plantilla
                 //tr fila
@@ -152,15 +163,20 @@ public class Matriz extends HttpServlet {
                             if (comprobar(Integer.toString(contenido[i][j])) && contenido[i][j] > 0 && contenido[i][j] < 10) {
                                 if (comprobar != null) {//Si nos han pedido comprobar pinto
                                     out.println("<td  class=\"cell\"><input style=\"background:" + resolver(i, j, contenido[i][j], solucion)
+                                            
                                             + ";\" type=\"text\" name=\"numero" + i + "" + j + "\" value=\"" + contenido[i][j] + "\"></td>");
+//                                    cliente.setAttribute("acabado", acabado);
                                 } else {//Si no nos piden comprobar NO pinto
                                     out.println("<td  class=\"cell\"><input type=\"text\" name=\"numero" + i + "" + j + "\" value=\"" + contenido[i][j] + "\"></td>");
                                 }
                             } else {
                                 out.println("<td  class=\"cell\"><input type=\"text\" name=\"numero" + i + "" + j + "\"></td>");
                             }
-                        } else { // sino imprime la caja de texto con el 0
+                        } else { // si no imprime la caja de texto con el 0
                             out.println("<td  class=\"cell\"><input type=\"text\" name=\"numero" + i + "" + j + "\"></td>");
+                            //si pasamos por aqui hay casillas vacias luego el sudoku no esta finalizado
+//                            acabado = false;
+//                            cliente.setAttribute("acabado", acabado);
                         }
                     }
                 }
@@ -182,6 +198,24 @@ public class Matriz extends HttpServlet {
             //out.println("<div class=\"comprobar\">");
             out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"datos\"><input type=\"hidden\" name=\"comprobar\" value=\"algo\"><button>Comprobar</button></form>");
             out.println("</div>");
+//            acabado = (boolean)cliente.getAttribute("acabado");
+//            if(acabado){
+               boolean acabado = true;
+            for (int i = 0; i < 9; i++) {
+                for (int j = 0; j < 9; j++) {
+                        if(matriz[i][j]!= solucion[i][j]&&numeroYposicion[i][j]!=solucion[i][j]){
+                            acabado =false;
+                        }
+                        
+                }
+
+            }
+               if (acabado){
+                   response.sendRedirect("sudokuAcabado.html");
+               }
+//            }
+            
+            
             //cliente.invalidate();
             ServletContext ctx = getServletContext();
             int totalUsers = (Integer) ctx.getAttribute("totalusers");
@@ -203,6 +237,12 @@ public class Matriz extends HttpServlet {
         if (solucion[x][y] == resp) {
             return "green";
         } else {
+//            //si hay alguna casilla erronea el sudoku no puede estar acabado
+//            System.out.println(acabado+ "acabado1111111111111111111111111111111111");
+//            
+//            acabado = false;
+//            
+//            System.out.println(acabado+ "acabado 222222222222222222222222222222");
             return "red";
         }
     }
