@@ -66,8 +66,8 @@
         <load-on-startup>1</load-on-startup>
     </servlet>
     <servlet>
-        <servlet-name>logOut</servlet-name>
-        <servlet-class>Matrizsudokuversion.logOut</servlet-class>
+        <servlet-name>LogOut</servlet-name>
+        <servlet-class>Matrizsudokuversion.LogOut</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>ServletHash</servlet-name>
@@ -94,8 +94,8 @@
         <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>logOut</servlet-name>
-        <url-pattern>/logOut</url-pattern>
+        <servlet-name>LogOut</servlet-name>
+        <url-pattern>/LogOut</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>ServletHash</servlet-name>
