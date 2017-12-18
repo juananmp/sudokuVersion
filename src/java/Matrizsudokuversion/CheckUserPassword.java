@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Matrizsudokuversion;
 
 import java.io.IOException;
@@ -35,6 +30,7 @@ public class CheckUserPassword extends HttpServlet {
     Statement statement = null;
     Connection connection = null;
 
+    //Abre conexión con la base de datos 
     @Override
     public void init() {
 
@@ -42,7 +38,7 @@ public class CheckUserPassword extends HttpServlet {
             InitialContext initialContext = new InitialContext();
             datasource = (DataSource) initialContext.lookup("jdbc/sudoku2");
         } catch (NamingException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
     }
 
@@ -75,22 +71,21 @@ public class CheckUserPassword extends HttpServlet {
         String user = request.getParameter("user");
         String password = request.getParameter("password");
 
-        //si en el login se pudiera elegir el numero de sudoku (o la dificultad), aqui recogeriamos el valor con un getParameter
-        int numSudoku = 1;
-
-        //creo sesion y guardo los datos user, password y numSudoku para su uso en los servlets posteriores
+        //creo sesion y guardo el dato user para su uso en los servlets posteriores
         HttpSession cliente = request.getSession();
         cliente.setAttribute("user", user);
-        cliente.setAttribute("numSudoku", numSudoku);
+
+        //Recuperación de parámetros de contexto para Hash
         ServletContext context = getServletConfig().getServletContext();
         int primo2 = Integer.parseInt(context.getInitParameter("primo2"));
-
         int primo1 = Integer.parseInt(context.getInitParameter("primo1"));
-
         ServletContext contexto = request.getServletContext();
+
+        //Encriptar password mediante hash
         int result = primo1;
         result = primo2 * result + password.hashCode();
 
+        //Verificar usuario y password en la base de datos
         try {
 
             String query = null;
@@ -100,22 +95,20 @@ public class CheckUserPassword extends HttpServlet {
             statement = connection.createStatement();
             resulSet = statement.executeQuery(query);
 
-            //con el while si el user y passwd estan en la bbdd lo ejecuta
+            //Si usuario y password correctos y se ha marcado recordar password, se almacena en una cookie
             if (resulSet.next()) {
                 String recordar = request.getParameter("recordar");
-                if(recordar!= null){
-                 Cookie ck = new Cookie(user, password);
-                 ck.setMaxAge(60 * 60 * 24 * 7);
-                 response.addCookie(ck);
+                if (recordar != null) {
+                    Cookie ck = new Cookie(user, password);
+                    ck.setMaxAge(60 * 60 * 24 * 7);
+                    response.addCookie(ck);
                 }
-                
-                RequestDispatcher facelet
-                        = contexto.getRequestDispatcher("/./faces/faceletInicio.xhtml");
-
+                //Si usuario y password correctos se va al menu principal
+                RequestDispatcher facelet = contexto.getRequestDispatcher("/./faces/faceletInicio.xhtml");
                 facelet.forward(request, response);
 
+                //Si usuario y password no correctos, se checkea si existe el usuario
             } else {
-
                 response.sendRedirect("CheckUser");
 
             }
@@ -124,6 +117,23 @@ public class CheckUserPassword extends HttpServlet {
 
         }
 
+    }
+
+    //Cierra conexion con la Base de datos
+    @Override
+    public void destroy() {
+        try {
+
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        }
     }
 
     /**
