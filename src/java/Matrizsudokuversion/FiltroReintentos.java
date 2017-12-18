@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Matrizsudokuversion;
 
 import java.io.IOException;
@@ -26,15 +21,6 @@ public class FiltroReintentos implements Filter {
 
     int hitCount;
 
-    /**
-     *
-     * @param request The servlet request we are processing
-     * @param response The servlet response we are creating
-     * @param chain The filter chain we are processing
-     *
-     * @exception IOException if an input/output error occurs
-     * @exception ServletException if a servlet error occurs
-     */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
             FilterChain chain)
@@ -45,6 +31,7 @@ public class FiltroReintentos implements Filter {
 
         hitCount++;
 
+        //Si mas de cinco intentos seguidos, se reenvia a pantalla de error
         if ((hitCount > 5)) {
 
             res.sendRedirect("errorReintentos.html");
