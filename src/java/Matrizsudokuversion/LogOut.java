@@ -1,14 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Matrizsudokuversion;
 
-/**
- *
- * @author janto
- */
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -23,14 +14,15 @@ import javax.servlet.http.HttpSession;
  */
 public class LogOut extends HttpServlet {
 
-   
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
         HttpSession cliente = request.getSession();
+
+        //Cierre de sesion de usuario
         cliente.invalidate();
         out.println("<link rel=\"stylesheet\" href=\"./resources/css/w3.css\">");
         out.println("   <div class=\"loginbox\">");
@@ -39,10 +31,9 @@ public class LogOut extends HttpServlet {
         out.println("<a href=\"index.html\">Si quieres volver a logearte pulse aqui</a><br>");
         out.println("</div>");
         out.close();
-        
+
     }
 
-    
     /**
      * Returns a short description of the servlet.
      *
