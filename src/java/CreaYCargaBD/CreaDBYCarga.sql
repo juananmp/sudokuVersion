@@ -67,11 +67,20 @@ CREATE TABLE IF NOT EXISTS `sudoku2`.`login` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
+-- -----------------------------------------------------
+-- Carga inicial de datos en tabla inicial
+-- OJO MODIFICAR RUTA FICHERO
+-- -----------------------------------------------------
 
 load data local infile "C:/Users/janto/Documents/NetBeansProjects/sudokuVersion/src/java/CreaYCargaBD/inicial.txt" into table `sudoku2`.`inicial`
 fields terminated by ','
 LINES terminated by '\n'
 (NumSudoku, Fila, Col, Valor);
+
+-- -----------------------------------------------------
+-- Carga inicial de datos en tabla final
+-- OJO MODIFICAR RUTA FICHERO
+-- -----------------------------------------------------
 
 load data local infile "C:/Users/janto/Documents/NetBeansProjects/sudokuVersion/src/java/CreaYCargaBD/final.txt" into table `sudoku2`.`final`
 fields terminated by ','
