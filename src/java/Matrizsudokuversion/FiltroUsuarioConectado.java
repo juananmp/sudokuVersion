@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Matrizsudokuversion;
 
 import java.io.IOException;
@@ -34,9 +29,12 @@ public class FiltroUsuarioConectado implements Filter {
 
         HttpServletRequest req = (HttpServletRequest) request;
         HttpServletResponse res = (HttpServletResponse) response;
+
+        //Se lee usuario de la sesion
         HttpSession cliente = req.getSession(true);
         user = (String) cliente.getAttribute("user");
 
+        //Si no existe usuario en la sesion, se reedirige a la pagina inicial
         if (user == null) {
 
             cliente.invalidate();
@@ -60,7 +58,4 @@ public class FiltroUsuarioConectado implements Filter {
 
     }
 
-    /**
-     * Init method for this filter
-     */
 }
