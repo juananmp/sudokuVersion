@@ -1,8 +1,3 @@
- /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Matrizsudokuversion;
 
 import java.io.IOException;
@@ -22,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author janto
  */
+
 public class FiltroLongUser implements Filter {
 
     @Override
@@ -34,6 +30,7 @@ public class FiltroLongUser implements Filter {
 
         String user = req.getParameter("user");
 
+        //Bloqueo si longitud de usuario menor que 4
         if (!(user.length() > 3)) {
 
             res.sendRedirect("loginUserMenosLetras.html");
@@ -56,7 +53,4 @@ public class FiltroLongUser implements Filter {
 
     }
 
-    /**
-     * Init method for this filter
-     */
 }
