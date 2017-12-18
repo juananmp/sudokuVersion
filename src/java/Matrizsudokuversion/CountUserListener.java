@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Matrizsudokuversion;
 
 import javax.servlet.ServletContext;
@@ -19,6 +14,7 @@ public class CountUserListener implements HttpSessionListener {
     ServletContext ctx = null;
     static int totalUserCount = 0, currentUserCount = 0;
 
+    //Aumenta en 1 el numero de usuario totales y concurrentes cada vez que se abre una sesion
     public void sessionCreated(HttpSessionEvent httpSessionEvent) {
         System.out.println("sessionCreated method has been called in "
                 + this.getClass().getName());
@@ -33,6 +29,7 @@ public class CountUserListener implements HttpSessionListener {
 
     }
 
+    //Disminuye en 1 el numero de usuario concurrentes cada vez que se cierra una sesion
     public void sessionDestroyed(HttpSessionEvent httpSessionEvent) {
 
         System.out.println("sessionDestroyed method has been called in "
