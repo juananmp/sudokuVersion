@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Matrizsudokuversion;
 
 import java.io.IOException;
@@ -30,19 +25,11 @@ import javax.sql.DataSource;
  */
 public class CheckUser extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
     DataSource datasource;
     Statement statement = null;
     Connection connection = null;
 
+    //abre conexion con la Base de Datos
     @Override
     public void init() {
 
@@ -50,7 +37,7 @@ public class CheckUser extends HttpServlet {
             InitialContext initialContext = new InitialContext();
             datasource = (DataSource) initialContext.lookup("jdbc/sudoku2");
         } catch (NamingException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
     }
 
@@ -62,14 +49,18 @@ public class CheckUser extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    //Verifica si existe Usuario
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         ServletContext contexto = request.getServletContext();
+
+        //Recuperamos usuario de la sesion
         HttpSession cliente = request.getSession();
         String user = (String) cliente.getAttribute("user");
 
+        //verificamos si el usuario existe en la base de datos
         try {
 
             String query = null;
@@ -79,14 +70,14 @@ public class CheckUser extends HttpServlet {
             statement = connection.createStatement();
             resulSet = statement.executeQuery(query);
 
-            //con el while si el user y passwd estan en la bbdd lo ejecuta
+            //si existe el usuario se indica error en password
             while (resulSet.next()) {
-
                 RequestDispatcher paginaError
                         = contexto.getRequestDispatcher("/errorPassword.html");
 
                 paginaError.forward(request, response);
             }
+            // Si no existe el usuario, se indica error en el usuario
             RequestDispatcher paginaError
                     = contexto.getRequestDispatcher("/errorUser.html");
 
@@ -107,19 +98,19 @@ public class CheckUser extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
+    //Da de alta un nuevo usuario
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
         String user = request.getParameter("user");
         String password = request.getParameter("password");
-
         HttpSession cliente = request.getSession();
         cliente.setAttribute("user", user);
         cliente.setAttribute("password", password);
-
         ServletContext contexto = request.getServletContext();
 
+        //Verifica si el usuario ya existe
         try {
 
             String query = null;
@@ -128,8 +119,8 @@ public class CheckUser extends HttpServlet {
             connection = datasource.getConnection();
             statement = connection.createStatement();
             resulSet = statement.executeQuery(query);
-            
-            //con el while si el user 
+
+            //Si el usuario ya existe, indica error
             while (resulSet.next()) {
 
                 RequestDispatcher paginaError
@@ -137,8 +128,12 @@ public class CheckUser extends HttpServlet {
 
                 paginaError.forward(request, response);
             }
+
+            //Si usuario no existe pero su longitud es inferior a 4 o no introduce la password, error
             if (!(user.length() > 3) || password.equals("")) {
                 response.sendRedirect("registroIncorrecto.html");
+
+                //en caso contrario, encriptar password y dar de alta usuario
             } else {
 
                 response.sendRedirect("ServletHash");
@@ -148,6 +143,23 @@ public class CheckUser extends HttpServlet {
             System.out.println(ex);
         }
 
+    }
+
+    //Cierra conexion con la Base de datos
+    @Override
+    public void destroy() {
+        try {
+
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        }
     }
 
     /**
