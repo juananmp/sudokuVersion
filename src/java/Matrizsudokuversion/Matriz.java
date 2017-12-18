@@ -45,85 +45,66 @@ public class Matriz extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
 
+        //Leer usuario de sesion
         HttpSession cliente = request.getSession();
         String user = (String) cliente.getAttribute("user");
-//        int numSudoku = (Integer) cliente.getAttribute("numSudoku");
-        
-//         boolean acabado = false;
-       
-        //comprobar dice si se ha pulsado ya el boton comprobar
-        String comprobar = request.getParameter("comprobar"); //Saber si nos piden comprobar, esto siempre escucha y siempre va a ser null hasta que pulse el botón de comprobar 
 
+        //Comprobar dice si se ha pulsado ya el boton comprobar
+        String comprobar = request.getParameter("comprobar");
+
+        //Leer numero de sudoku seleccionado
         String stringNumSudoku = request.getParameter("numSudoku");
         int numSudoku;
-        //Si es distinto de 0 que lo suba a la sesion, si es la primera vez numSudoku es distinto de 0 y lo subo a la sesion
-        if(stringNumSudoku != null){
-           numSudoku = Integer.parseInt(request.getParameter("numSudoku"));
-            cliente.setAttribute("numSudoku", numSudoku);
-            //Si no le doy a comprobar no he podido acabar el sudoku
-           
-        }else{
-            numSudoku = (Integer)cliente.getAttribute("numSudoku");
-        }
-        Database db = new Database();
 
+        //Si es la primera ejecucion del Servlet, numSudoku es distinto de null y lo subo a la sesion
+        if (stringNumSudoku != null) {
+            numSudoku = Integer.parseInt(request.getParameter("numSudoku"));
+            cliente.setAttribute("numSudoku", numSudoku);
+
+            //Si no es la primera ejecucion, se lee numSudoku de la Sesion           
+        } else {
+            numSudoku = (Integer) cliente.getAttribute("numSudoku");
+        }
+        //Leo de la base de datos el sudoku inicial y el final
+        Database db = new Database();
         int[][] matriz = db.plantilla("Inicial", numSudoku);
         int[][] solucion = db.plantilla("Final", numSudoku);
-       
-        //parametro de inicilizacion y ServletConfig tiene un metodo llamado getinitparameter
+        //Lee parametro de inicilizacion con titulo de la pagina y ServletConfig tiene un metodo llamado getinitparameter
         ServletConfig sc = this.getServletConfig();
         String saludo = sc.getInitParameter("saludo");
 
-        //Si estamos entrando por primera vez mira a ver si tiene un cockie para ese usuario
+        //Si no se ha pulsado comprobar 
         if (comprobar == null) {
+
             int[][] numeroYposicion = new int[9][9];
-//            Cookie[] cks = request.getCookies();
-
-            //quitar
-//            for (int i = 0; i < cks.length; i++) {
-//                //select de intermedia where el usuario igual
-//                Cookie ckActual = cks[i];
-//                System.out.println(i);
-//                String identificador = ckActual.getName();
-//                String valor = ckActual.getValue();
-//                
-//                //si hay cookie recupera los datos de la tabla intermedia y se los mete en numeroYposcion que es la que siempre dibujo
-//               if (identificador.equals(user) && valor.equals("sudoku")) { //quitar
-                    numeroYposicion = db.plantillaIntermedia(user, numSudoku);
-
-                    cliente.setAttribute("numeroYposicion", numeroYposicion); //aqui se subscribe
-//                }
-//
-//            }
+            //Se leen datos del estado intermedio del sudoku y se suben a numeroYposicion para pintarlo despues
+            numeroYposicion = db.plantillaIntermedia(user, numSudoku);
+            cliente.setAttribute("numeroYposicion", numeroYposicion);
         }
 
-        //la primera vez que entre el valor de numeroYposicion va a ser nulo
-        if (cliente.getAttribute("numeroYposicion") != null) {//si existe el numeroYposcion es que la partida ha empezado
-            System.out.println("la partida ha ocmenzado");
-            for (int m = 0; m < 9; m++) { //movernos por fila y columna 1er piso
-                for (int k = 0; k < 9; k++) { //entramos por habitcion del primer piso
-                    if (comprobar(request.getParameter("numero" + m + k))) {//¿Nos envian algo? y si es un número?
-                        //cp los valores que existen y los sobreescribes con los nuevos
-                        //vas habitación por habitación y ves que hay un número en ella, cuando vuelve y dice ya no esta este numero lo sobreescribimos
+        //Si numeroYposicion no es nulo, no es la primera entrada al servlet
+        if (cliente.getAttribute("numeroYposicion") != null) {
+            for (int m = 0; m < 9; m++) { //Movernos por fila 
+                for (int k = 0; k < 9; k++) { //Movernos por columna
+                    //Si en una cuadricula el usuario ha escrito un numero, sobreescribimos en numero y posicion
+                    if (comprobar(request.getParameter("numero" + m + k))) {
                         int[][] numeroYposicion = (int[][]) cliente.getAttribute("numeroYposicion");
                         numeroYposicion[m][k] = Integer.parseInt(request.getParameter("numero" + m + k));
-
-                        request.setAttribute("numeroYposicion", numeroYposicion); //aqui se subscribe
-
+                        request.setAttribute("numeroYposicion", numeroYposicion);
                     }
 
                 }
             }
-            //no hay casa la creo
-        } else { // si no existe numeroYposcion lo inicilazimos
-            //se guardan las respuestas del cliente en un int bidimensional
+
+            //Si no existe numeroYposcion lo inicilazimos
+        } else {
             int[][] numeroYposicion = new int[9][9];
-            //nada mas crear la casa lo lleno de 0s que el usuario no ve
             cliente.setAttribute("numeroYposicion", numeroYposicion);
         }
 
+        //Pintar Sudoku con datos de numeroYposicion
         try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
+
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
@@ -133,39 +114,30 @@ public class Matriz extends HttpServlet {
             out.println("</head>");
             out.println("<body>");
             out.println("<h4>" + saludo + "</h4>");
+            //Se vuelve a ejecutat el Servlet Matriz (action)
             out.println(" <form method=\"post\" action=\"/sudokuVersion/Matriz\"><table id=\"grid\">");
-            //cogemos otra vez la matriz, volvemos a coger la casa, puede ser nueva o ya con datos
-            int[][] contenido = (int[][]) cliente.getAttribute("numeroYposicion");
-//           if(comprobar==null){
 
-//                acabado = false;
-//                cliente.setAttribute("acabado", acabado);
-//            }else{
-//                acabado = true;
-//                cliente.setAttribute("acabado", acabado);
-//            }
-            
-              //estos 2 bucles nos sirven para insertar los inputs, las cajas de texto
-            //volvemos a recorrer por piso y las habitaciones
+            int[][] contenido = (int[][]) cliente.getAttribute("numeroYposicion");
+
+            //Recorremos las cuadriculas pintando
             for (int i = 0; i < matriz.length; i++) {//matriz es matriz plantilla
                 //tr fila
                 out.println("  <tr>");
                 for (int j = 0; j < matriz.length; j++) {
-                    //coumna; fijo la fila y ahora voy de columna en columna
-                    if (matriz[i][j] != 0) { //si es distinto de 0 no se puede escribir
-                        out.println("<td  class=\"cell\"> <input type=\"text\" value=\"" + matriz[i][j] + "\" disabled></td>"); //como ya hemos definido que matriz es la plantilla queremos que inicialmente esos valores esten bloqueados
+
+                    if (matriz[i][j] != 0) { //Se bloquean las cifras predefinidas
+                        out.println("<td  class=\"cell\"> <input type=\"text\" value=\"" + matriz[i][j] + "\" disabled></td>");
+
+                        // Cifras en las que si se puede escribir
                     } else {//si es 0 es que ahi deemos escribir
-                        //dentro del else comprobamos si hemos escrito algo ya o no y si decidimos comprobar pintarlo en verde o rojo
-                        //si casa no esta vacia y la habitacion no tiene 0
+                        // Si la celda no es vacia verificamos mediante el metodo comprobamos que sea un numero entre 1-9 y si se
+                        //ha apretado el boton comprobar ponemos el fondo a verde 
+                        //o rojo mediante el metodo de resolver
                         if (contenido != null && contenido[i][j] != 0) {
-                            //comprobar es saber si es un número 
-                            // && contenido[i][j]<1 && contenido[i][j]>9
                             if (comprobar(Integer.toString(contenido[i][j])) && contenido[i][j] > 0 && contenido[i][j] < 10) {
                                 if (comprobar != null) {//Si nos han pedido comprobar pinto
                                     out.println("<td  class=\"cell\"><input style=\"background:" + resolver(i, j, contenido[i][j], solucion)
-                                            
                                             + ";\" type=\"text\" name=\"numero" + i + "" + j + "\" value=\"" + contenido[i][j] + "\"></td>");
-//                                    cliente.setAttribute("acabado", acabado);
                                 } else {//Si no nos piden comprobar NO pinto
                                     out.println("<td  class=\"cell\"><input type=\"text\" name=\"numero" + i + "" + j + "\" value=\"" + contenido[i][j] + "\"></td>");
                                 }
@@ -174,49 +146,39 @@ public class Matriz extends HttpServlet {
                             }
                         } else { // si no imprime la caja de texto con el 0
                             out.println("<td  class=\"cell\"><input type=\"text\" name=\"numero" + i + "" + j + "\"></td>");
-                            //si pasamos por aqui hay casillas vacias luego el sudoku no esta finalizado
-//                            acabado = false;
-//                            cliente.setAttribute("acabado", acabado);
                         }
                     }
                 }
                 out.println("</tr>");
             }
             out.println("</table>");
-             out.println("<div class=\"almacenarclass\">");
-             out.println("<h6>Panel De Control</h6>");
+            out.println("<div class=\"almacenarclass\">");
+            out.println("<h6>Panel De Control</h6>");
             out.println("<button>Almacenar</button>");
-            //out.println("</div>");
             out.println("</form>");
-
             int[][] numeroYposicion = (int[][]) cliente.getAttribute("numeroYposicion");
-//            Cookie ck = new Cookie(user, "sudoku");
-//            ck.setMaxAge(60 * 60 * 24 * 7);
-//            response.addCookie(ck);
 
+            //Se guarda estado del sudoku en tabla intermedia
             db.guardar(user, numeroYposicion, numSudoku);
-            //out.println("<div class=\"comprobar\">");
             out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"datos\"><input type=\"hidden\" name=\"comprobar\" value=\"algo\"><button>Comprobar</button></form>");
             out.println("</div>");
-//            acabado = (boolean)cliente.getAttribute("acabado");
-//            if(acabado){
-               boolean acabado = true;
+
+            //Verifica si el sudoku esta correctamente acabado
+            boolean acabado = true;
             for (int i = 0; i < 9; i++) {
                 for (int j = 0; j < 9; j++) {
-                        if(matriz[i][j]!= solucion[i][j]&&numeroYposicion[i][j]!=solucion[i][j]){
-                            acabado =false;
-                        }
-                        
+                    if (matriz[i][j] != solucion[i][j] && numeroYposicion[i][j] != solucion[i][j]) {
+                        acabado = false;
+                    }
+
                 }
 
             }
-               if (acabado){
-                   response.sendRedirect("sudokuAcabado.html");
-               }
-//            }
-            
-            
-            //cliente.invalidate();
+            if (acabado) {
+                response.sendRedirect("sudokuAcabado.html");
+            }
+
+            //Estadistica de usuarios concurrentes y usuarios conectados
             ServletContext ctx = getServletContext();
             int totalUsers = (Integer) ctx.getAttribute("totalusers");
             int currentUsers = (Integer) ctx.getAttribute("currentusers");
@@ -233,17 +195,22 @@ public class Matriz extends HttpServlet {
         }
     }
 
+    //Si la solucion de la casilla es correcta se pone fondo verde; sino, se pone fondo rojo
     public String resolver(int x, int y, int resp, int[][] solucion) {
         if (solucion[x][y] == resp) {
             return "green";
         } else {
-//            //si hay alguna casilla erronea el sudoku no puede estar acabado
-//            System.out.println(acabado+ "acabado1111111111111111111111111111111111");
-//            
-//            acabado = false;
-//            
-//            System.out.println(acabado+ "acabado 222222222222222222222222222222");
             return "red";
+        }
+    }
+
+    //Verifica si la casilla es un numero
+    public boolean comprobar(String celda) {
+        try {
+            Integer.parseInt(celda);
+            return true;
+        } catch (NumberFormatException nfe) {
+            return false;
         }
     }
 
@@ -287,12 +254,4 @@ public class Matriz extends HttpServlet {
         return "Short description";
     }// </editor-fold>
 
-    public boolean comprobar(String celda) {
-        try { //saber si es un numero lo que me manda
-            Integer.parseInt(celda);
-            return true;
-        } catch (NumberFormatException nfe) {
-            return false;
-        }
-    }
 }
