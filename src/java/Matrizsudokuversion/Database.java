@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Matrizsudokuversion;
 
 import java.io.File;
@@ -39,6 +34,7 @@ public class Database extends HttpServlet {
     Statement statement = null;
     Connection connection = null;
 
+    //Abre conexion con la base de datos
     @Override
     public void init() {
         try {
@@ -46,7 +42,6 @@ public class Database extends HttpServlet {
 
             datasource = (DataSource) initialContext.lookup("jdbc/sudoku2");
         } catch (NamingException ex) {
-            //  Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
             System.out.println(ex);
         }
 
@@ -79,6 +74,7 @@ public class Database extends HttpServlet {
 
     }
 
+    //Guarda el estado intermedio de un usuario para un numero de sudoku en la tabla intermedia
     public void guardar(String user, int[][] intermedia, int numSudoku) {
         init();
 
@@ -119,6 +115,7 @@ public class Database extends HttpServlet {
 
     }
 
+    //Borra un estado intermedio para un usuario y sudoku de la tabla intermedia
     public void borrar(String user, int numSudoku) {
         init();
 
@@ -139,6 +136,7 @@ public class Database extends HttpServlet {
 
     }
 
+    //Lee un estadio intermedio de Sudoku de la tabla intermedia
     public int[][] plantillaIntermedia(String user, int numSudoku) {
         init();
         int[][] i = new int[9][9];
@@ -146,14 +144,11 @@ public class Database extends HttpServlet {
             String query = null;
             query = "SELECT * FROM intermedia WHERE user = '"
                     + user + "' AND NumSudoku = " + numSudoku;
-            System.out.println(query);            
+            System.out.println(query);
             ResultSet resulSet = null;
             connection = datasource.getConnection();
             statement = connection.createStatement();
             resulSet = statement.executeQuery(query);
-
-            //necesitamos un puntero que es x, hace un bucle y recorre por fila
-            //x++ cambias de columna
             int x = 0;
             int y;
 
@@ -178,7 +173,7 @@ public class Database extends HttpServlet {
 
     }
 
-    //cuando el usuario pide una plantilla de sudoku le redireccionamos a ella
+    //Lee el contenido de un sudoku de la tabla inicial o final, según se indique en la variable plantilla
     public int[][] plantilla(String plantilla, int numSudoku) {
         init();
         int[][] i = new int[9][9];
@@ -190,9 +185,6 @@ public class Database extends HttpServlet {
             connection = datasource.getConnection();
             statement = connection.createStatement();
             resulSet = statement.executeQuery(query);
-
-            //necesitamos un puntero que es x, hace un bucle y recorre por fila
-            //x++ cambias de columna
             int x = 0;
             int y;
 
@@ -220,18 +212,19 @@ public class Database extends HttpServlet {
 
     }
 
+    //Cierra conexion con la Base de datos
     @Override
     public void destroy() {
         try {
 
             statement.close();
         } catch (SQLException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         } finally {
             try {
                 connection.close();
             } catch (SQLException ex) {
-                Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println(ex);
             }
         }
     }
