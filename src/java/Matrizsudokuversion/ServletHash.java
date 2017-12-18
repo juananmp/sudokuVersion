@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Matrizsudokuversion;
 
 import java.io.IOException;
@@ -33,6 +28,7 @@ public class ServletHash extends HttpServlet {
     Statement statement = null;
     Connection connection = null;
 
+    //Se abre conexion con la base de datos
     @Override
     public void init() {
 
@@ -40,7 +36,7 @@ public class ServletHash extends HttpServlet {
             InitialContext initialContext = new InitialContext();
             datasource = (DataSource) initialContext.lookup("jdbc/sudoku2");
         } catch (NamingException ex) {
-            Logger.getLogger(Database.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println(ex);
         }
     }
 
@@ -58,18 +54,22 @@ public class ServletHash extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
 
         ServletContext context = getServletConfig().getServletContext();
-        int primo1 = Integer.parseInt(context.getInitParameter("primo1"));
 
+        //Recuperacion de parametros para hash
+        int primo1 = Integer.parseInt(context.getInitParameter("primo1"));
         int primo2 = Integer.parseInt(context.getInitParameter("primo2"));
 
+        //Leer usuario y password desde sesion
         HttpSession cliente = request.getSession();
         String user = (String) cliente.getAttribute("user");
         String password = (String) cliente.getAttribute("password");
 
         ServletContext contexto = request.getServletContext();
+        //Encriptar password con hash
         int result = primo1;
         result = primo2 * result + password.hashCode();
 
+        //Insertar nuevo usuario y password encriptadda en la tabla de login
         String query = null;
 
         query = "INSERT INTO login VALUES ('" + user + "', '" + result + "')";
@@ -120,6 +120,23 @@ public class ServletHash extends HttpServlet {
             throws ServletException, IOException {
 
         processRequest(request, response);
+    }
+
+    //Cierra conexion con la Base de datos
+    @Override
+    public void destroy() {
+        try {
+
+            statement.close();
+        } catch (SQLException ex) {
+            System.out.println(ex);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException ex) {
+                System.out.println(ex);
+            }
+        }
     }
 
     /**
