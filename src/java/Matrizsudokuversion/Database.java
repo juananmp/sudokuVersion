@@ -31,8 +31,8 @@ import javax.sql.DataSource;
 public class Database extends HttpServlet {
 
     DataSource datasource;
-    Statement statement = null;
-    Connection connection = null;
+//    Statement statement = null;
+//    Connection connection = null;
 
     //Abre conexion con la base de datos
     @Override
@@ -102,6 +102,7 @@ public class Database extends HttpServlet {
                     connection = datasource.getConnection();
                     statement = connection.createStatement();
                     statement.executeUpdate(query);
+                    statement.close();
                     connection.close();
                 } catch (SQLException ex) {
                     System.out.println(ex);
@@ -129,6 +130,7 @@ public class Database extends HttpServlet {
             connection = datasource.getConnection();
             statement = connection.createStatement();
             statement.executeUpdate(query);
+            statement.close();
             connection.close();
         } catch (SQLException ex) {
             System.out.println(ex);
@@ -140,6 +142,8 @@ public class Database extends HttpServlet {
     public int[][] plantillaIntermedia(String user, int numSudoku) {
         init();
         int[][] i = new int[9][9];
+         Statement statement = null;
+                Connection connection = null;
         try {
             String query = null;
             query = "SELECT * FROM intermedia WHERE user = '"
@@ -163,6 +167,7 @@ public class Database extends HttpServlet {
                 x++;
 
             }
+            statement.close();
             connection.close();
 
         } catch (SQLException ex) {
@@ -177,6 +182,8 @@ public class Database extends HttpServlet {
     public int[][] plantilla(String plantilla, int numSudoku) {
         init();
         int[][] i = new int[9][9];
+         Statement statement = null;
+                Connection connection = null;
         try {
             String query = null;
             query = "SELECT * FROM " + plantilla + " where NumSudoku = " + numSudoku;
@@ -200,6 +207,7 @@ public class Database extends HttpServlet {
                 x++;
 
             }
+            statement.close();
             connection.close();
 
             return i;
@@ -215,6 +223,8 @@ public class Database extends HttpServlet {
     //Cierra conexion con la Base de datos
     @Override
     public void destroy() {
+         Statement statement = null;
+                Connection connection = null;
         try {
 
             statement.close();
