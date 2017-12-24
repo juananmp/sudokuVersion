@@ -78,7 +78,7 @@ LINES terminated by '\n'
 (NumSudoku, Fila, Col, Valor);
 
 -- -----------------------------------------------------
--- Carga inicial de datos en tabla final
+-- Carga final de datos en tabla final
 -- OJO MODIFICAR RUTA FICHERO
 -- -----------------------------------------------------
 
