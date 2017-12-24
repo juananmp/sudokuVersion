@@ -33,7 +33,7 @@ public class FiltroLongUser implements Filter {
         //Bloqueo si longitud de usuario menor que 4
         if (!(user.length() > 3)) {
 
-            res.sendRedirect("loginUserMenosLetras.html");
+            res.sendRedirect("/sudokuVersion/faces/loginUserMenosLetras.xhtml");
 
         } else {
             // pass the request along the filter chain
