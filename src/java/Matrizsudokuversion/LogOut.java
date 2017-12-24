@@ -18,19 +18,11 @@ public class LogOut extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
         HttpSession cliente = request.getSession();
 
         //Cierre de sesion de usuario
         cliente.invalidate();
-        out.println("<link rel=\"stylesheet\" href=\"./resources/css/w3.css\">");
-        out.println("   <div class=\"loginbox\">");
-        out.println("<h1>Has hecho logOut</h1>");
-        out.println("<br>");
-        out.println("<a href=\"index.html\">Si quieres volver a logearte pulse aqui</a><br>");
-        out.println("</div>");
-        out.close();
+        response.sendRedirect("index.html");
 
     }
 
