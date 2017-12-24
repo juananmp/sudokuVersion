@@ -101,6 +101,14 @@
         <servlet-name>ServletHash</servlet-name>
         <url-pattern>/ServletHash</url-pattern>
     </servlet-mapping>
+    <error-page>
+        <error-code>404</error-code>
+        <location>/faces/error404.xhtml</location>
+    </error-page>
+     <error-page>
+        <error-code>500</error-code>
+        <location>/faces/error500.xhtml</location>
+    </error-page>
     <session-config>
         <session-timeout>
             30
