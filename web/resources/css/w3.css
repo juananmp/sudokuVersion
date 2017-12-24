@@ -293,9 +293,9 @@ body{
     padding: 40px 75px;
 }
 
-.loginbox{
-    width: 320px;
-    height: 420px;
+.loginbox6{
+    width: 1000px;
+    height: 700px;
     background: #000;
     color: #fff;
     top: 50%;
@@ -555,6 +555,7 @@ h4{
     line-height: 20px;
     color: darkgrey;
 }
+
 
 .loginbox a:hover{
     
