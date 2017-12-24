@@ -25,8 +25,8 @@ import javax.sql.DataSource;
 public class ServletHash extends HttpServlet {
 
     DataSource datasource;
-    Statement statement = null;
-    Connection connection = null;
+//    Statement statement = null;
+//    Connection connection = null;
 
     //Se abre conexion con la base de datos
     @Override
@@ -52,6 +52,7 @@ public class ServletHash extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        
 
         ServletContext context = getServletConfig().getServletContext();
 
@@ -82,10 +83,13 @@ public class ServletHash extends HttpServlet {
 
             request.setAttribute("nextPage", this.getServletContext().getContextPath() + "/ServletHash");
 
-            RequestDispatcher altaUser
-                    = contexto.getRequestDispatcher("/paginaExitoRegistro.html");
-            altaUser.forward(request, response);
+//            RequestDispatcher altaUser
+//                    = contexto.getRequestDispatcher("/paginaExitoRegistro.html");
+//            altaUser.forward(request, response);
 
+            response.sendRedirect("/sudokuVersion/faces/paginaExitoRegistro.xhtml");
+
+            statement.close();
             connection.close();
         } catch (SQLException ex) {
             System.out.println(ex);
@@ -125,6 +129,8 @@ public class ServletHash extends HttpServlet {
     //Cierra conexion con la Base de datos
     @Override
     public void destroy() {
+         Statement statement = null;
+    Connection connection = null;
         try {
 
             statement.close();
