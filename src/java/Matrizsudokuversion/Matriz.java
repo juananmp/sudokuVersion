@@ -175,7 +175,7 @@ public class Matriz extends HttpServlet {
 
             }
             if (acabado) {
-                response.sendRedirect("sudokuAcabado.html");
+                response.sendRedirect("/sudokuVersion/faces/sudokuAcabado.xhtml");
             }
 
             //Estadistica de usuarios concurrentes y usuarios conectados
