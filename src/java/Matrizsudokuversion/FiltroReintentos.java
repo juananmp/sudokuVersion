@@ -34,7 +34,7 @@ public class FiltroReintentos implements Filter {
         //Si mas de cinco intentos seguidos, se reenvia a pantalla de error
         if ((hitCount > 5)) {
 
-            res.sendRedirect("errorReintentos.html");
+            res.sendRedirect("/sudokuVersion/faces/errorReintentos.xhtml");
 
         } else {
 
