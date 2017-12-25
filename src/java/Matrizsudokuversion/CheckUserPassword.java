@@ -27,9 +27,7 @@ import javax.sql.DataSource;
 public class CheckUserPassword extends HttpServlet {
 
     DataSource datasource;
-//    Statement statement = null;
-//    Connection connection = null;
-
+    
     //Abre conexión con la base de datos 
     @Override
     public void init() {
@@ -68,8 +66,8 @@ public class CheckUserPassword extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-         Statement statement = null;
-    Connection connection = null;
+        Statement statement = null;
+        Connection connection = null;
         String user = request.getParameter("user");
         String password = request.getParameter("password");
 
@@ -114,7 +112,7 @@ public class CheckUserPassword extends HttpServlet {
                 response.sendRedirect("CheckUser");
 
             }
-             statement.close();
+            statement.close();
             connection.close();
         } catch (SQLException ex) {
             System.out.println(ex);
@@ -126,8 +124,8 @@ public class CheckUserPassword extends HttpServlet {
     //Cierra conexion con la Base de datos
     @Override
     public void destroy() {
-         Statement statement = null;
-    Connection connection = null;
+        Statement statement = null;
+        Connection connection = null;
         try {
 
             statement.close();
