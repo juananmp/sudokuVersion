@@ -17,10 +17,6 @@
         <filter-class>Matrizsudokuversion.FiltroLongUser</filter-class>
     </filter>
     <filter>
-        <filter-name>FiltroReintentos</filter-name>
-        <filter-class>Matrizsudokuversion.FiltroReintentos</filter-class>
-    </filter>
-    <filter>
         <filter-name>FiltroUsuarioConectado</filter-name>
         <filter-class>Matrizsudokuversion.FiltroUsuarioConectado</filter-class>
     </filter>
@@ -31,10 +27,6 @@
     <filter-mapping>
         <filter-name>FiltroLongUser</filter-name>
         <servlet-name>CheckUserPassword</servlet-name>
-    </filter-mapping>
-    <filter-mapping>
-        <filter-name>FiltroReintentos</filter-name>
-        <servlet-name>CheckUser</servlet-name>
     </filter-mapping>
     <listener>
         <description>HttpSessionListener</description>
@@ -73,6 +65,10 @@
         <servlet-name>ServletHash</servlet-name>
         <servlet-class>Matrizsudokuversion.ServletHash</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>Matriz2</servlet-name>
+        <servlet-class>Matrizsudokuversion.Matriz</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Database</servlet-name>
         <url-pattern>/Database</url-pattern>
@@ -105,7 +101,7 @@
         <error-code>404</error-code>
         <location>/faces/error404.xhtml</location>
     </error-page>
-     <error-page>
+    <error-page>
         <error-code>500</error-code>
         <location>/faces/error500.xhtml</location>
     </error-page>
