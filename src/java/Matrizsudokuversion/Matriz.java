@@ -49,8 +49,14 @@ public class Matriz extends HttpServlet {
         HttpSession cliente = request.getSession();
         String user = (String) cliente.getAttribute("user");
 
-        //Comprobar dice si se ha pulsado ya el boton comprobar
-        String comprobar = request.getParameter("comprobar");
+        //Leo de la base de datos el sudoku inicial y el final
+        Database db = new Database();
+
+        int[][] matriz;
+        int[][] solucion;
+        //Lee parametro de inicilizacion con titulo de la pagina y ServletConfig tiene un metodo llamado getinitparameter
+        ServletConfig sc = this.getServletConfig();
+        String saludo = sc.getInitParameter("saludo");
 
         //Leer numero de sudoku seleccionado
         String stringNumSudoku = request.getParameter("numSudoku");
@@ -58,32 +64,30 @@ public class Matriz extends HttpServlet {
 
         //Si es la primera ejecucion del Servlet, numSudoku es distinto de null y lo subo a la sesion
         if (stringNumSudoku != null) {
+            System.out.println("primera ejecucion por numsudoku");
             numSudoku = Integer.parseInt(request.getParameter("numSudoku"));
             cliente.setAttribute("numSudoku", numSudoku);
-
+            matriz = db.plantilla("Inicial", numSudoku);
+            System.out.println("leo inicial y final");
+            solucion = db.plantilla("Final", numSudoku);
+            cliente.setAttribute("matriz", matriz);
+            cliente.setAttribute("solucion", solucion);
             //Si no es la primera ejecucion, se lee numSudoku de la Sesion           
         } else {
+            System.out.println("No primera ejecucion por numSUDoku");
             numSudoku = (Integer) cliente.getAttribute("numSudoku");
-        }
-        //Leo de la base de datos el sudoku inicial y el final
-        Database db = new Database();
-        int[][] matriz = db.plantilla("Inicial", numSudoku);
-        int[][] solucion = db.plantilla("Final", numSudoku);
-        //Lee parametro de inicilizacion con titulo de la pagina y ServletConfig tiene un metodo llamado getinitparameter
-        ServletConfig sc = this.getServletConfig();
-        String saludo = sc.getInitParameter("saludo");
 
-        //Si no se ha pulsado comprobar 
-        if (comprobar == null) {
-
-            int[][] numeroYposicion = new int[9][9];
-            //Se leen datos del estado intermedio del sudoku y se suben a numeroYposicion para pintarlo despues
-            numeroYposicion = db.plantillaIntermedia(user, numSudoku);
-            cliente.setAttribute("numeroYposicion", numeroYposicion);
+            matriz = (int[][]) cliente.getAttribute("matriz");
+            solucion = (int[][]) cliente.getAttribute("solucion");
         }
+
+        //Comprobar dice si se ha pulsado ya el boton comprobar
+        String comprobar = request.getParameter("comprobar");
+        System.out.println("imprimo comprobar" + comprobar);
 
         //Si numeroYposicion no es nulo, no es la primera entrada al servlet
         if (cliente.getAttribute("numeroYposicion") != null) {
+            System.out.println("no primera ejecucion por numero y posicion");
             for (int m = 0; m < 9; m++) { //Movernos por fila 
                 for (int k = 0; k < 9; k++) { //Movernos por columna
                     //Si en una cuadricula el usuario ha escrito un numero, sobreescribimos en numero y posicion
@@ -98,8 +102,12 @@ public class Matriz extends HttpServlet {
 
             //Si no existe numeroYposcion lo inicilazimos
         } else {
+            System.out.println("Primera ejecucion por numeroYposicion");
             int[][] numeroYposicion = new int[9][9];
+            //Se leen datos del estado intermedio del sudoku y se suben a numeroYposicion para pintarlo despues
+            numeroYposicion = db.plantillaIntermedia(user, numSudoku);
             cliente.setAttribute("numeroYposicion", numeroYposicion);
+
         }
 
         //Pintar Sudoku con datos de numeroYposicion
@@ -115,10 +123,11 @@ public class Matriz extends HttpServlet {
             out.println("<body>");
             out.println("<h4>" + saludo + "</h4>");
             //Se vuelve a ejecutat el Servlet Matriz (action)
+
             out.println(" <form method=\"post\" action=\"/sudokuVersion/Matriz\"><table id=\"grid\">");
 
             int[][] contenido = (int[][]) cliente.getAttribute("numeroYposicion");
-
+            System.out.println("Asignado contenido");
             //Recorremos las cuadriculas pintando
             for (int i = 0; i < matriz.length; i++) {//matriz es matriz plantilla
                 //tr fila
@@ -157,12 +166,16 @@ public class Matriz extends HttpServlet {
             out.println("<button>Almacenar</button>");
             out.println("</form>");
             int[][] numeroYposicion = (int[][]) cliente.getAttribute("numeroYposicion");
-
+            System.out.println("fin form almacenar, guardando sudoku");
             //Se guarda estado del sudoku en tabla intermedia
             db.guardar(user, numeroYposicion, numSudoku);
-            out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"datos\"><input type=\"hidden\" name=\"comprobar\" value=\"algo\"><button>Comprobar</button></form>");
+
+            out.println("<form method=\"post\" action=\"/sudokuVersion/Matriz\" name=\"datos\"><input type=\"hidden\" name=\"comprobar\" value=\"algo\"><button>Comprobar</button>");
+            out.println("</form>");
+            System.out.println("fin form comprobar");
             out.println("</div>");
 
+            System.out.println("verificar acabado");
             //Verifica si el sudoku esta correctamente acabado
             boolean acabado = true;
             for (int i = 0; i < 9; i++) {
@@ -175,6 +188,7 @@ public class Matriz extends HttpServlet {
 
             }
             if (acabado) {
+                System.out.println("Si esta acabado");
                 response.sendRedirect("/sudokuVersion/faces/sudokuAcabado.xhtml");
             }
 
@@ -206,6 +220,7 @@ public class Matriz extends HttpServlet {
 
     //Verifica si la casilla es un numero
     public boolean comprobar(String celda) {
+        System.out.println("compruebo el valor de celda" + celda);
         try {
             Integer.parseInt(celda);
             return true;
