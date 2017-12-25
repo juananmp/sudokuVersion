@@ -29,11 +29,7 @@ import javax.sql.DataSource;
 public class CheckUser extends HttpServlet {
 
     DataSource datasource;
-
-//    Statement statement = null;
-//
-//    Connection connection = null;
-
+    
     //abre conexion con la Base de Datos
     @Override
 
@@ -71,9 +67,9 @@ public class CheckUser extends HttpServlet {
 
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-Statement statement = null;
+        Statement statement = null;
 
-    Connection connection = null;
+        Connection connection = null;
         ServletContext contexto = request.getServletContext();
 
         //Recuperamos usuario de la sesion
@@ -111,7 +107,7 @@ Statement statement = null;
                     = contexto.getRequestDispatcher("/./faces/errorUser.xhtml");
 
             paginaError.forward(request, response);
-            
+
             statement.close();
             connection.close();
 
@@ -143,13 +139,13 @@ Statement statement = null;
 
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-Statement statement = null;
+        Statement statement = null;
 
-    Connection connection = null;
+        Connection connection = null;
         String user = request.getParameter("user");
 
         String password = request.getParameter("password");
-        
+
         String password2 = request.getParameter("password2");
 
         HttpSession cliente = request.getSession();
@@ -190,14 +186,13 @@ Statement statement = null;
 
                 response.sendRedirect("/sudokuVersion/faces/registroIncorrecto.xhtml");
 
-                
                 //en caso contrario, encriptar password y dar de alta usuario
             } else {
 
                 response.sendRedirect("ServletHash");
 
             }
-             statement.close();
+            statement.close();
             connection.close();
         } catch (SQLException ex) {
 
@@ -211,9 +206,9 @@ Statement statement = null;
     @Override
 
     public void destroy() {
-Statement statement = null;
+        Statement statement = null;
 
-    Connection connection = null;
+        Connection connection = null;
         try {
 
             statement.close();
