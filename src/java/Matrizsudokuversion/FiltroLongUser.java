@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author janto
  */
-
 public class FiltroLongUser implements Filter {
 
     @Override
